@@ -1,13 +1,12 @@
-import mockjs from 'mockjs';
+import Mock from 'mockjs';
+import { delay } from 'roadhog-api-doc';
 
-Mock.setup({
-  timeout: '1000 - 5000', // 方式二 设置区间 注意这个是一个字符串形式
-});
-
-export default {
-  'GET /api/records': mockjs.mock({
+const proxy = {
+  'GET /api/records': Mock.mock({
     'list|10': [{ 'id|+1': 123, name: '@name', 'noid|+1': 123, email: '@email' }],
     total: 60,
   }),
-  'GET /api/userInfo': mockjs.mock({ name: '@name', email: '@email', create: '@datetime', city: '@city' }),
+  'GET /api/accountInfo': Mock.mock({ name: '@name', email: '@email', birth: '@datetime', city: '@city', 'balance|1-100': 30 }),
 };
+
+export default delay(proxy, 4000);

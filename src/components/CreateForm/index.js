@@ -140,9 +140,9 @@ CreateForm.propTypes = {
   getFieldDecorator: PropTypes.func.isRequired,
   name: PropTypes.string, // key值
   defaultValue: PropTypes.any, // 默认值
-  label: PropTypes.element, // label
+  label: PropTypes.any, // label
   placeholder: PropTypes.string, // 默认跟label相同
-  message: PropTypes.element, // 报错message,默认:This field is required
+  message: PropTypes.any, // 报错message,默认:This field is required
   required: PropTypes.bool, // 是否必填,默认true
   showItem: PropTypes.bool, // 是否显示formItem,默认true
   fieldProps: PropTypes.object, // field的props

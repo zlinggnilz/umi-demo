@@ -43,6 +43,10 @@ export default class TablePage extends PureComponent {
   }
 
   getList = (p = 1, payload = {}) => {
+    if (typeof p !== 'number') {
+      console.error('页码不是数字');
+      return;
+    }
     const page = p < 1 ? 1 : p;
     const { dispatch, type } = this.props;
     const { size } = this.state;

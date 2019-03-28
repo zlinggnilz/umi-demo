@@ -1,25 +1,38 @@
 import React, { PureComponent, Fragment } from 'react';
+import { connect } from 'dva';
 import Card from '@/components/Card';
 import CreateForm from '@/components/CreateForm';
 import Table from '@/components/TablePage';
 import { Form, Row, Col, Button } from 'antd';
 
-const columns = [{ title: 'Number Id', dataIndex: 'noid' }, { title: 'Name', dataIndex: 'name' }, { title: 'Email', dataIndex: 'email' }];
-
+@connect(({ table, loading }) => ({
+  records: table.records,
+  searchLoading: loading.effects['table/fetchRecords'],
+}))
 @Form.create()
 class RecordTable extends PureComponent {
   handleSubmit = e => {
-    e.preventDefault();
     const { form } = this.props;
+
+    e.preventDefault();
+
+    form.validateFields((err, values) => {
+      if (err) return;
+      console.log('表单数据: ');
+      console.table(values);
+      this.refs.tablePage.getList(1, values);
+    });
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { dispatch, form, records, searchLoading } = this.props;
+    const { getFieldDecorator } = form;
     const formArr = [
-      { key: 'name', type: 'text', label: '名称' },
-      { key: 'no', type: 'text', label: '编号' },
-      { key: 'email', type: 'email', label: '邮箱' },
+      { key: 'name', label: '名称', required: false },
+      { key: 'no', label: '编号', required: true },
+      { key: 'email', type: 'email', label: '邮箱', required: false, message: 'Please enter correct email' },
     ];
+    const columns = [{ title: 'Number Id', dataIndex: 'noid' }, { title: 'Name', dataIndex: 'name' }, { title: 'Email', dataIndex: 'email' }];
 
     return (
       <Fragment>
@@ -27,13 +40,21 @@ class RecordTable extends PureComponent {
           <Form onSubmit={this.handleSubmit} layout="vertical">
             <Row type="flex" gutter={32}>
               {formArr.map(item => (
-                <Col sm={24} md={12} lg={8}>
-                  <CreateForm key={item.key} name={item.key} type={item.type} label={item.label} getFieldDecorator={getFieldDecorator} />
+                <Col sm={24} md={12} lg={8} key={`col${item.key}`}>
+                  <CreateForm
+                    getFieldDecorator={getFieldDecorator}
+                    key={item.key}
+                    name={item.key}
+                    type={item.type}
+                    label={item.label}
+                    required={item.required}
+                    message={item.message}
+                  />
                 </Col>
               ))}
             </Row>
             <div className="text-center">
-              <Button type="primary" className="btn-form">
+              <Button type="primary" htmlType="submit" className="btn-form" loading={searchLoading}>
                 提交
               </Button>
             </div>
@@ -41,7 +62,7 @@ class RecordTable extends PureComponent {
         </Card>
 
         <Card title="搜索记录">
-          <Table ref="tablePage" columns={columns} type="table/records" />
+          <Table ref="tablePage" loading={searchLoading} columns={columns} dispatch={dispatch} dataSource={records} type="table/fetchRecords" />
         </Card>
       </Fragment>
     );
