@@ -1,0 +1,91 @@
+@import '~@/styles/val.less';
+
+.fieldWrap {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  .bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    overflow: hidden;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      height: 2px;
+      background: @blue;
+      width: 0;
+      overflow: hidden;
+      transition: all 0.5s;
+
+    }
+
+    &:before {
+      right: 50%;
+    }
+
+    &:after {
+      left: 50%;
+    }
+  }
+
+}
+
+.field {
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-top: 0 !important;
+  outline: none !important;
+  border-bottom-color: #333 !important;
+  box-shadow: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+  vertical-align: bottom;
+
+  &:hover {
+    border-bottom-color: #333 !important;
+  }
+
+  &:focus {
+    box-shadow: none !important;
+
+    &+.bar {
+
+      &:before,
+      &:after {
+        width: 50%;
+      }
+    }
+  }
+}
+
+
+
+.fieldSelect {
+  width: 100%;
+
+  :global {
+    .ant-select-selection {
+      border-left: 0 !important;
+      border-right: 0 !important;
+      border-top: 0 !important;
+      outline: none !important;
+      border-bottom-color: #333 !important;
+      box-shadow: none !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      vertical-align: bottom;
+    }
+
+    .ant-select-selection__rendered {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}

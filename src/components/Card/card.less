@@ -1,0 +1,58 @@
+@import '~@/styles/val.less';
+
+
+:global {
+    .ant-card-head {
+        min-height: 45px !important;
+
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .ant-card-type-inner {
+        >.ant-card-head {
+
+            a:hover {
+                color: @red;
+            }
+        }
+    }
+}
+
+
+:global {
+
+    .card-blue,
+    .card-yellow {
+        &.ant-card-bordered {
+            border: 0px none;
+
+            >.ant-card-body {
+                border: 1px solid #DDD;
+            }
+        }
+
+        >.ant-card-head {
+            color: #fff;
+
+            .ant-card-extra,
+            a {
+                color: #fff;
+            }
+        }
+    }
+
+    .card-yellow {
+        >.ant-card-head {
+            background: @yellow;
+        }
+    }
+
+    .card-blue {
+        >.ant-card-head {
+            background: @blue-light;
+        }
+    }
+
+}
