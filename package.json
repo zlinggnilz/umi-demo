@@ -1,7 +1,7 @@
 {
   "name": "Max",
   "version": "1.0.0",
-  "description": "max",
+  "description": "Max",
   "private": true,
   "scripts": {
     "start": "cross-env APP_TYPE=site umi dev",

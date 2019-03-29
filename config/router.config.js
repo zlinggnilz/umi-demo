@@ -31,7 +31,7 @@ export default [
         routes: [
           {
             path: '/demo/form',
-            name: '表单',
+            name: '多级表单',
             component: './demo/form',
           },
           {
