@@ -34,8 +34,7 @@ export default {
   'app.settings.security.email': 'Email de Backup',
   'app.settings.security.email-description': 'Email vinculado',
   'app.settings.security.mfa': 'Dispositivo MFA',
-  'app.settings.security.mfa-description':
-    'O dispositivo MFA não vinculado, após a vinculação, pode ser confirmado duas vezes',
+  'app.settings.security.mfa-description': 'O dispositivo MFA não vinculado, após a vinculação, pode ser confirmado duas vezes',
   'app.settings.security.modify': 'Modificar',
   'app.settings.security.set': 'Atribuir',
   'app.settings.security.bind': 'Vincular',
@@ -47,14 +46,11 @@ export default {
   'app.settings.binding.dingding-description': 'Atualmente não vinculado à conta DingTalk',
   'app.settings.binding.bind': 'Vincular',
   'app.settings.notification.password': 'Senha da Conta',
-  'app.settings.notification.password-description':
-    'Mensagens de outros usuários serão notificadas na forma de uma estação de letra',
+  'app.settings.notification.password-description': 'Mensagens de outros usuários serão notificadas na forma de uma estação de letra',
   'app.settings.notification.messages': 'Mensagens de Sistema',
-  'app.settings.notification.messages-description':
-    'Mensagens de sistema serão notificadas na forma de uma estação de letra',
+  'app.settings.notification.messages-description': 'Mensagens de sistema serão notificadas na forma de uma estação de letra',
   'app.settings.notification.todo': 'Notificação de To-do',
-  'app.settings.notification.todo-description':
-    'A lista de to-do será notificada na forma de uma estação de letra',
+  'app.settings.notification.todo-description': 'A lista de to-do será notificada na forma de uma estação de letra',
   'app.settings.open': 'Aberto',
   'app.settings.close': 'Fechado',
 };

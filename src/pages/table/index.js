@@ -11,6 +11,8 @@ import { Form, Row, Col, Button } from 'antd';
 }))
 @Form.create()
 class RecordTable extends PureComponent {
+  tableRef = React.createRef();
+
   handleSubmit = e => {
     const { form } = this.props;
 
@@ -20,7 +22,7 @@ class RecordTable extends PureComponent {
       if (err) return;
       console.log('表单数据: ');
       console.table(values);
-      this.refs.tablePage.getList(1, values);
+      this.tableRef.current.getList(1, values);
     });
   };
 
@@ -43,7 +45,6 @@ class RecordTable extends PureComponent {
                 <Col sm={24} md={12} lg={8} key={`col${item.key}`}>
                   <CreateForm
                     getFieldDecorator={getFieldDecorator}
-                    key={item.key}
                     name={item.key}
                     type={item.type}
                     label={item.label}
@@ -62,10 +63,11 @@ class RecordTable extends PureComponent {
         </Card>
 
         <Card title="搜索记录">
-          <Table ref="tablePage" loading={searchLoading} columns={columns} dispatch={dispatch} dataSource={records} type="table/fetchRecords" />
+          <Table ref={this.tableRef} loading={searchLoading} columns={columns} dispatch={dispatch} dataSource={records} type="table/fetchRecords" />
         </Card>
       </Fragment>
     );
   }
 }
+
 export default RecordTable;

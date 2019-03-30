@@ -41,13 +41,7 @@ export default class PageHeader extends PureComponent {
     return (
       <div className={clsString}>
         <div className={wide ? styles.wide : ''}>
-          <Skeleton
-            loading={loading}
-            title={false}
-            active
-            paragraph={{ rows: 3 }}
-            avatar={{ size: 'large', shape: 'circle' }}
-          >
+          <Skeleton loading={loading} title={false} active paragraph={{ rows: 3 }} avatar={{ size: 'large', shape: 'circle' }}>
             {hiddenBreadcrumb ? null : <BreadcrumbView {...this.props} />}
             <div className={styles.detail}>
               {logo && <div className={styles.logo}>{logo}</div>}
@@ -63,12 +57,7 @@ export default class PageHeader extends PureComponent {
               </div>
             </div>
             {tabList && tabList.length ? (
-              <Tabs
-                className={styles.tabs}
-                {...activeKeyProps}
-                onChange={this.onChange}
-                tabBarExtraContent={tabBarExtraContent}
-              >
+              <Tabs className={styles.tabs} {...activeKeyProps} onChange={this.onChange} tabBarExtraContent={tabBarExtraContent}>
                 {tabList.map(item => (
                   <TabPane tab={item.tab} key={item.key} />
                 ))}

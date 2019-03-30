@@ -188,18 +188,9 @@ class WaterWave extends PureComponent {
     const { radio } = this.state;
     const { percent, title, height } = this.props;
     return (
-      <div
-        className={styles.waterWave}
-        ref={n => (this.root = n)}
-        style={{ transform: `scale(${radio})` }}
-      >
+      <div className={styles.waterWave} ref={n => (this.root = n)} style={{ transform: `scale(${radio})` }}>
         <div style={{ width: height, height, overflow: 'hidden' }}>
-          <canvas
-            className={styles.waterWaveCanvasWrapper}
-            ref={n => (this.node = n)}
-            width={height * 2}
-            height={height * 2}
-          />
+          <canvas className={styles.waterWaveCanvasWrapper} ref={n => (this.node = n)} width={height * 2} height={height * 2} />
         </div>
         <div className={styles.text} style={{ width: height }}>
           {title && <span>{title}</span>}

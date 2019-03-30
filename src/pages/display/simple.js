@@ -6,19 +6,20 @@ import { isEmpty, map } from 'lodash';
 
 const { Description } = DescriptionList;
 
-@connect(({ account, loading }) => ({
-  accountInfo: account.info,
-  accountLoading: loading.effects['account/fetchInfo'],
+@connect(({ info, loading }) => ({
+  accountInfo: info.info,
+  accountLoading: loading.effects['info/fetchInfo'],
 }))
-export default class Account extends PureComponent {
+class Account extends PureComponent {
   componentDidMount() {
     const { dispatch, accountInfo } = this.props;
     if (isEmpty(accountInfo)) {
       dispatch({
-        type: 'account/fetchInfo',
+        type: 'info/fetchInfo',
       });
     }
   }
+
   render() {
     const { accountLoading, accountInfo } = this.props;
 
@@ -35,3 +36,5 @@ export default class Account extends PureComponent {
     );
   }
 }
+
+export default Account;

@@ -66,9 +66,7 @@ class TagSelect extends Component {
   getAllTags() {
     let { children } = this.props;
     children = React.Children.toArray(children);
-    const checkedTags = children
-      .filter(child => this.isTagSelectOption(child))
-      .map(child => child.props.value);
+    const checkedTags = children.filter(child => this.isTagSelectOption(child)).map(child => child.props.value);
     return checkedTags || [];
   }
 
@@ -92,17 +90,13 @@ class TagSelect extends Component {
     });
   };
 
-  isTagSelectOption = node =>
-    node &&
-    node.type &&
-    (node.type.isTagSelectOption || node.type.displayName === 'TagSelectOption');
+  isTagSelectOption = node => node && node.type && (node.type.isTagSelectOption || node.type.displayName === 'TagSelectOption');
 
   render() {
     const { value, expand } = this.state;
     const { children, hideCheckAll, className, style, expandable, actionsText } = this.props;
     const checkedAll = this.getAllTags().length === value.length;
-    const { expandText = 'Expand', collapseText = 'Collapse', selectAllText = 'All' } =
-      actionsText === null ? {} : actionsText;
+    const { expandText = 'Expand', collapseText = 'Collapse', selectAllText = 'All' } = actionsText === null ? {} : actionsText;
 
     const cls = classNames(styles.tagSelect, className, {
       [styles.hasExpandTag]: expandable,

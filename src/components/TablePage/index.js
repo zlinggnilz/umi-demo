@@ -37,9 +37,7 @@ export default class TablePage extends PureComponent {
   //   }
 
   componentWillUnmount() {
-    this.setState = (state, callback) => {
-      return;
-    };
+    this.setState = (state, callback) => {};
   }
 
   getList = (p = 1, payload = {}) => {
@@ -73,7 +71,7 @@ export default class TablePage extends PureComponent {
     this.getList(page + v, this.payload);
   };
 
-  handleChange(pagination, filters, sorter) {
+  handleChange(pagination) {
     this.getList(pagination.current, this.payload);
   }
 

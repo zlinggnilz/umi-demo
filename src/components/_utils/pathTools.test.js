@@ -8,10 +8,6 @@ describe('test urlToList', () => {
     expect(urlToList('/userinfo/2144')).toEqual(['/userinfo', '/userinfo/2144']);
   });
   it('Three paths', () => {
-    expect(urlToList('/userinfo/2144/addr')).toEqual([
-      '/userinfo',
-      '/userinfo/2144',
-      '/userinfo/2144/addr',
-    ]);
+    expect(urlToList('/userinfo/2144/addr')).toEqual(['/userinfo', '/userinfo/2144', '/userinfo/2144/addr']);
   });
 });

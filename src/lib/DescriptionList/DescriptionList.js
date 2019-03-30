@@ -3,16 +3,7 @@ import classNames from 'classnames';
 import { Row } from 'antd';
 import styles from './index.less';
 
-const DescriptionList = ({
-  className,
-  title,
-  col = 3,
-  layout = 'horizontal',
-  gutter = 32,
-  children,
-  size,
-  ...restProps
-}) => {
+const DescriptionList = ({ className, title, col = 3, layout = 'horizontal', gutter = 32, children, size, ...restProps }) => {
   const clsString = classNames(styles.descriptionList, styles[layout], className, {
     [styles.small]: size === 'small',
     [styles.large]: size === 'large',
@@ -21,11 +12,7 @@ const DescriptionList = ({
   return (
     <div className={clsString} {...restProps}>
       {title ? <div className={styles.title}>{title}</div> : null}
-      <Row gutter={gutter}>
-        {React.Children.map(children, child =>
-          child ? React.cloneElement(child, { column }) : child
-        )}
-      </Row>
+      <Row gutter={gutter}>{React.Children.map(children, child => (child ? React.cloneElement(child, { column }) : child))}</Row>
     </div>
   );
 };

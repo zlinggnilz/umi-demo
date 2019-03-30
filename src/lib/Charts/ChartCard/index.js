@@ -60,17 +60,7 @@ class ChartCard extends React.PureComponent {
   };
 
   render() {
-    const {
-      loading = false,
-      contentHeight,
-      title,
-      avatar,
-      action,
-      total,
-      footer,
-      children,
-      ...rest
-    } = this.props;
+    const { loading = false, contentHeight, title, avatar, action, total, footer, children, ...rest } = this.props;
     return (
       <Card loading={loading} bodyStyle={{ padding: '20px 24px 8px 24px' }} {...rest}>
         {this.renderConnet()}

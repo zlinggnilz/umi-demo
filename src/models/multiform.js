@@ -1,5 +1,3 @@
-import * as services from '@/services/account';
-
 export default {
   namespace: 'multiform',
 
@@ -15,7 +13,10 @@ export default {
     delKey(state, action) {
       const name = `${action.payload}-`;
       const keys = Object.keys(state).filter(item => item.indexOf(name) !== 0);
-      const obj = keys.length ? keys.reduce((total, item) => (total[item] = state[item]), {}) : {};
+      const obj = {};
+      keys.forEach(item => {
+        obj[item] = state[item];
+      });
       return obj;
     },
   },

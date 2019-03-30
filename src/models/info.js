@@ -1,7 +1,7 @@
-import * as services from '@/services/account';
+import * as services from '@/services/info';
 
 export default {
-  namespace: 'account',
+  namespace: 'info',
 
   state: {
     info: {},
@@ -14,6 +14,14 @@ export default {
         type: 'setInfo',
         payload: data,
       });
+    },
+    *formSubmit1({ payload }, { call }) {
+      yield call(services.formSubmit, payload);
+      return Promise.resolve();
+    },
+    *formSubmit2({ payload }, { call }) {
+      yield call(services.formSubmit, payload);
+      return Promise.resolve();
     },
   },
 

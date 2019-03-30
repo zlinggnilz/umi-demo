@@ -20,7 +20,7 @@ export default class CustomCard extends PureComponent {
     const { children, className, color, type, ...rest } = this.props;
     const colorType = type === 'inner' ? '' : color;
     return (
-      <Card className={`${colorType ? 'card-' + colorType : ''} ${className}`} type={type} {...rest}>
+      <Card className={`${colorType ? `card-${colorType}` : ''} ${className}`} type={type} {...rest}>
         {children}
       </Card>
     );

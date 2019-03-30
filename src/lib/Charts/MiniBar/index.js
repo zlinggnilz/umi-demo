@@ -33,13 +33,7 @@ class MiniBar extends React.Component {
     return (
       <div className={styles.miniChart} style={{ height }}>
         <div className={styles.chartContent}>
-          <Chart
-            scale={scale}
-            height={chartHeight}
-            forceFit={forceFit}
-            data={data}
-            padding={padding}
-          >
+          <Chart scale={scale} height={chartHeight} forceFit={forceFit} data={data} padding={padding}>
             <Tooltip showTitle={false} crosshairs={false} />
             <Geom type="interval" position="x*y" color={color} tooltip={tooltip} />
           </Chart>

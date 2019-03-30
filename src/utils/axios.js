@@ -41,17 +41,16 @@ service.interceptors.response.use(
         // 跳转到登录页
       }
       return Promise.reject(res.message);
-    } else {
-      if (!res.success) {
-        // success 不是true 的情况
-        message.error(res.message);
-        return Promise.reject(res.message);
-      }
-      return response.data;
     }
+    if (!res.success) {
+      // success 不是true 的情况
+      message.error(res.message);
+      return Promise.reject(res.message);
+    }
+    return response.data;
   },
   error => {
-    console.log('error: ' + error); // for debug
+    console.log(`error: ${error}`); // for debug
     // message(error.mesage);
     return Promise.reject(error);
   }

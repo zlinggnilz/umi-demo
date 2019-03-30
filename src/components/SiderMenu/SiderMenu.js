@@ -55,7 +55,16 @@ export default class SiderMenu extends PureComponent {
       [styles.light]: theme === 'light',
     });
     return (
-      <Sider trigger={null} collapsible collapsed={collapsed} breakpoint="lg" onCollapse={onCollapse} width={256} theme={theme} className={siderClassName}>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        breakpoint="lg"
+        onCollapse={onCollapse}
+        width={256}
+        theme={theme}
+        className={siderClassName}
+      >
         <div className={styles.logo} id="logo">
           <Link to="/">
             <img src={logo} alt="logo" />

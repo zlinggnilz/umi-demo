@@ -24,7 +24,6 @@ const getIcon = icon => {
 };
 
 export default class BaseMenu extends PureComponent {
-
   /**
    * 获得菜单子节点
    * @memberof SiderMenu
@@ -145,16 +144,7 @@ export default class BaseMenu extends PureComponent {
     });
 
     return (
-      <Menu
-        key="Menu"
-        mode={mode}
-        theme={theme}
-        onOpenChange={handleOpenChange}
-        selectedKeys={selectedKeys}
-        style={style}
-        className={cls}
-        {...props}
-      >
+      <Menu key="Menu" mode={mode} theme={theme} onOpenChange={handleOpenChange} selectedKeys={selectedKeys} style={style} className={cls} {...props}>
         {this.getNavMenuItems(menuData)}
       </Menu>
     );

@@ -1,7 +1,7 @@
-import { message } from 'antd';
+// import { message } from 'antd';
 import defaultSettings from '../defaultSettings';
 
-let lessNodesAppended;
+// let lessNodesAppended;
 // const updateTheme = primaryColor => {
 //   // Don't compile less in production!
 //   if (APP_TYPE !== 'site') {

@@ -30,19 +30,4 @@ declare const Charts: {
   TimelineChart: TimelineChart;
 };
 
-export {
-  Charts as default,
-  yuan,
-  Bar,
-  Pie,
-  Gauge,
-  Radar,
-  MiniBar,
-  MiniArea,
-  MiniProgress,
-  ChartCard,
-  Field,
-  WaterWave,
-  TagCloud,
-  TimelineChart,
-};
+export { Charts as default, yuan, Bar, Pie, Gauge, Radar, MiniBar, MiniArea, MiniProgress, ChartCard, Field, WaterWave, TagCloud, TimelineChart };

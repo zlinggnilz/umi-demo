@@ -28,12 +28,6 @@ const flatMenuKeys = getFlatMenuKeys(menu);
 
 describe('test convert nested menu to flat menu', () => {
   it('simple menu', () => {
-    expect(flatMenuKeys).toEqual([
-      '/dashboard',
-      '/dashboard/name',
-      '/userinfo',
-      '/userinfo/:id',
-      '/userinfo/:id/info',
-    ]);
+    expect(flatMenuKeys).toEqual(['/dashboard', '/dashboard/name', '/userinfo', '/userinfo/:id', '/userinfo/:id/info']);
   });
 });

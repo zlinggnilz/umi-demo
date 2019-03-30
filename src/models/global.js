@@ -64,12 +64,12 @@ export default {
   },
 
   reducers: {
-    // changeLayoutCollapsed(state, { payload }) {
-    //   return {
-    //     ...state,
-    //     collapsed: payload,
-    //   };
-    // },
+    changeLayoutCollapsed(state, { payload }) {
+      return {
+        ...state,
+        collapsed: payload,
+      };
+    },
     // saveNotices(state, { payload }) {
     //   return {
     //     ...state,

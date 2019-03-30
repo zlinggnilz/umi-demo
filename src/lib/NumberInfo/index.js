@@ -16,10 +16,7 @@ const NumberInfo = ({ theme, title, subTitle, total, subTotal, status, suffix, g
       </div>
     )}
     {subTitle && (
-      <div
-        className={styles.numberInfoSubTitle}
-        title={typeof subTitle === 'string' ? subTitle : ''}
-      >
+      <div className={styles.numberInfoSubTitle} title={typeof subTitle === 'string' ? subTitle : ''}>
         {subTitle}
       </div>
     )}

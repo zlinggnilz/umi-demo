@@ -92,11 +92,7 @@ export default class BreadcrumbView extends PureComponent {
       const name = itemRender ? itemRender(currentBreadcrumb) : currentBreadcrumb.name;
       return currentBreadcrumb.name && !currentBreadcrumb.hideInBreadcrumb ? (
         <Breadcrumb.Item key={url}>
-          {createElement(
-            isLinkable ? linkElement : 'span',
-            { [linkElement === 'a' ? 'href' : 'to']: url },
-            name
-          )}
+          {createElement(isLinkable ? linkElement : 'span', { [linkElement === 'a' ? 'href' : 'to']: url }, name)}
         </Breadcrumb.Item>
       ) : null;
     });

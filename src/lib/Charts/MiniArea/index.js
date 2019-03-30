@@ -48,32 +48,9 @@ class MiniArea extends React.PureComponent {
       <div className={styles.miniChart} style={{ height }}>
         <div className={styles.chartContent}>
           {height > 0 && (
-            <Chart
-              animate={animate}
-              scale={scaleProps}
-              height={chartHeight}
-              forceFit={forceFit}
-              data={data}
-              padding={padding}
-            >
-              <Axis
-                key="axis-x"
-                name="x"
-                label={false}
-                line={false}
-                tickLine={false}
-                grid={false}
-                {...xAxis}
-              />
-              <Axis
-                key="axis-y"
-                name="y"
-                label={false}
-                line={false}
-                tickLine={false}
-                grid={false}
-                {...yAxis}
-              />
+            <Chart animate={animate} scale={scaleProps} height={chartHeight} forceFit={forceFit} data={data} padding={padding}>
+              <Axis key="axis-x" name="x" label={false} line={false} tickLine={false} grid={false} {...xAxis} />
+              <Axis key="axis-y" name="y" label={false} line={false} tickLine={false} grid={false} {...yAxis} />
               <Tooltip showTitle={false} crosshairs={false} />
               <Geom
                 type="area"
@@ -86,14 +63,7 @@ class MiniArea extends React.PureComponent {
                 }}
               />
               {line ? (
-                <Geom
-                  type="line"
-                  position="x*y"
-                  shape="smooth"
-                  color={borderColor}
-                  size={borderWidth}
-                  tooltip={false}
-                />
+                <Geom type="line" position="x*y" shape="smooth" color={borderColor} size={borderWidth} tooltip={false} />
               ) : (
                 <span style={{ display: 'none' }} />
               )}

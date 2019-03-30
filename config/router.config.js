@@ -16,30 +16,42 @@ export default [
     routes: [
       {
         path: '/',
-        redirect: '/account',
+        redirect: '/display/simple',
       },
       {
-        path: '/account',
-        name: '账户',
+        path: '/display',
+        name: '信息展示',
         icon: 'user',
-        component: './account',
+        routes: [
+          {
+            path: '/display/simple',
+            name: '普通',
+            component: './display/simple',
+          },
+        ],
       },
       {
-        path: '/demo',
-        name: '页面',
+        path: '/form',
+        name: '表单',
         icon: 'reconciliation',
         routes: [
           {
-            path: '/demo/form',
-            name: '多级表单',
-            component: './demo/form',
+            path: '/form/simple-form',
+            name: '普通表单',
+            component: './form/simple-form',
           },
           {
-            path: '/demo/table',
-            name: '翻页表格',
-            component: './demo/table',
+            path: '/form/multi-form',
+            name: '多级表单',
+            component: './form/multi-form',
           },
         ],
+      },
+      {
+        path: '/table',
+        name: '翻页表格',
+        icon: 'table',
+        component: './table',
       },
     ],
   },

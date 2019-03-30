@@ -36,56 +36,27 @@ class SettingDrawer extends PureComponent {
       {
         title: formatMessage({ id: 'app.setting.content-width' }),
         action: (
-          <Select
-            value={contentWidth}
-            size="small"
-            onSelect={value => this.changeSetting('contentWidth', value)}
-            style={{ width: 80 }}
-          >
-            {layout === 'sidemenu' ? null : (
-              <Option value="Fixed">
-                {formatMessage({ id: 'app.setting.content-width.fixed' })}
-              </Option>
-            )}
-            <Option value="Fluid">
-              {formatMessage({ id: 'app.setting.content-width.fluid' })}
-            </Option>
+          <Select value={contentWidth} size="small" onSelect={value => this.changeSetting('contentWidth', value)} style={{ width: 80 }}>
+            {layout === 'sidemenu' ? null : <Option value="Fixed">{formatMessage({ id: 'app.setting.content-width.fixed' })}</Option>}
+            <Option value="Fluid">{formatMessage({ id: 'app.setting.content-width.fluid' })}</Option>
           </Select>
         ),
       },
       {
         title: formatMessage({ id: 'app.setting.fixedheader' }),
-        action: (
-          <Switch
-            size="small"
-            checked={!!fixedHeader}
-            onChange={checked => this.changeSetting('fixedHeader', checked)}
-          />
-        ),
+        action: <Switch size="small" checked={!!fixedHeader} onChange={checked => this.changeSetting('fixedHeader', checked)} />,
       },
       {
         title: formatMessage({ id: 'app.setting.hideheader' }),
         disabled: !fixedHeader,
         disabledReason: formatMessage({ id: 'app.setting.hideheader.hint' }),
-        action: (
-          <Switch
-            size="small"
-            checked={!!autoHideHeader}
-            onChange={checked => this.changeSetting('autoHideHeader', checked)}
-          />
-        ),
+        action: <Switch size="small" checked={!!autoHideHeader} onChange={checked => this.changeSetting('autoHideHeader', checked)} />,
       },
       {
         title: formatMessage({ id: 'app.setting.fixedsidebar' }),
         disabled: layout === 'topmenu',
         disabledReason: formatMessage({ id: 'app.setting.fixedsidebar.hint' }),
-        action: (
-          <Switch
-            size="small"
-            checked={!!fixSiderbar}
-            onChange={checked => this.changeSetting('fixSiderbar', checked)}
-          />
-        ),
+        action: <Switch size="small" checked={!!fixSiderbar} onChange={checked => this.changeSetting('fixSiderbar', checked)} />,
       },
     ];
   };
@@ -198,24 +169,12 @@ class SettingDrawer extends PureComponent {
             />
           </Body>
 
-          <List
-            split={false}
-            dataSource={this.getLayoutSetting()}
-            renderItem={this.renderLayoutSettingItem}
-          />
+          <List split={false} dataSource={this.getLayoutSetting()} renderItem={this.renderLayoutSettingItem} />
 
           <Divider />
 
           <Body title={formatMessage({ id: 'app.setting.othersettings' })}>
-            <List.Item
-              actions={[
-                <Switch
-                  size="small"
-                  checked={!!colorWeak}
-                  onChange={checked => this.changeSetting('colorWeak', checked)}
-                />,
-              ]}
-            >
+            <List.Item actions={[<Switch size="small" checked={!!colorWeak} onChange={checked => this.changeSetting('colorWeak', checked)} />]}>
               {formatMessage({ id: 'app.setting.weakmode' })}
             </List.Item>
           </Body>
@@ -234,11 +193,7 @@ class SettingDrawer extends PureComponent {
             message={
               <div>
                 {formatMessage({ id: 'app.setting.production.hint' })}{' '}
-                <a
-                  href="https://u.ant.design/pro-v2-default-settings"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="https://u.ant.design/pro-v2-default-settings" target="_blank" rel="noopener noreferrer">
                   src/defaultSettings.js
                 </a>
               </div>

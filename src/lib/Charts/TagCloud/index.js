@@ -138,11 +138,7 @@ class TagCloud extends Component {
     const { dv, w, h } = this.state;
 
     return (
-      <div
-        className={classNames(styles.tagCloud, className)}
-        style={{ width: '100%', height }}
-        ref={this.saveRootRef}
-      >
+      <div className={classNames(styles.tagCloud, className)} style={{ width: '100%', height }} ref={this.saveRootRef}>
         {dv && (
           <Chart
             width={w}

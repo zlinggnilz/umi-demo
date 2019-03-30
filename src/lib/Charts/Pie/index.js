@@ -140,11 +140,7 @@ class Pie extends Component {
       [styles.legendBlock]: legendBlock,
     });
 
-    const {
-      data: propsData,
-      selected: propsSelected = true,
-      tooltip: propsTooltip = true,
-    } = this.props;
+    const { data: propsData, selected: propsSelected = true, tooltip: propsTooltip = true } = this.props;
 
     let data = propsData || [];
     let selected = propsSelected;
@@ -235,9 +231,7 @@ class Pie extends Component {
               <div className={styles.total}>
                 {subTitle && <h4 className="pie-sub-title">{subTitle}</h4>}
                 {/* eslint-disable-next-line */}
-                {total && (
-                  <div className="pie-stat">{typeof total === 'function' ? total() : total}</div>
-                )}
+                {total && <div className="pie-stat">{typeof total === 'function' ? total() : total}</div>}
               </div>
             )}
           </div>
@@ -255,9 +249,7 @@ class Pie extends Component {
                 />
                 <span className={styles.legendTitle}>{item.x}</span>
                 <Divider type="vertical" />
-                <span className={styles.percent}>
-                  {`${(Number.isNaN(item.percent) ? 0 : item.percent * 100).toFixed(2)}%`}
-                </span>
+                <span className={styles.percent}>{`${(Number.isNaN(item.percent) ? 0 : item.percent * 100).toFixed(2)}%`}</span>
                 <span className={styles.value}>{valueFormat ? valueFormat(item.y) : item.y}</span>
               </li>
             ))}

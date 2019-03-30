@@ -64,14 +64,7 @@ export default class GlobalHeaderRight extends PureComponent {
   };
 
   render() {
-    const {
-      currentUser,
-      fetchingNotices,
-      onNoticeVisibleChange,
-      onMenuClick,
-      onNoticeClear,
-      theme,
-    } = this.props;
+    const { currentUser, fetchingNotices, onNoticeVisibleChange, onMenuClick, onNoticeClear, theme } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item key="userCenter">
@@ -117,12 +110,7 @@ export default class GlobalHeaderRight extends PureComponent {
           }}
         />
         <Tooltip title={formatMessage({ id: 'component.globalHeader.help' })}>
-          <a
-            target="_blank"
-            href="https://pro.ant.design/docs/getting-started"
-            rel="noopener noreferrer"
-            className={styles.action}
-          >
+          <a target="_blank" href="https://pro.ant.design/docs/getting-started" rel="noopener noreferrer" className={styles.action}>
             <Icon type="question-circle-o" />
           </a>
         </Tooltip>
@@ -175,12 +163,7 @@ export default class GlobalHeaderRight extends PureComponent {
         {currentUser.name ? (
           <HeaderDropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
-              <Avatar
-                size="small"
-                className={styles.avatar}
-                src={currentUser.avatar}
-                alt="avatar"
-              />
+              <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
               <span className={styles.name}>{currentUser.name}</span>
             </span>
           </HeaderDropdown>
