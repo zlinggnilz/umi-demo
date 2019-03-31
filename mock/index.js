@@ -9,4 +9,4 @@ const proxy = {
   'GET /api/accountInfo': Mock.mock({ name: '@name', email: '@email', birth: '@datetime', city: '@city', 'balance|1-100': 30 }),
 };
 
-export default delay(proxy, 2500);
+export default delay(proxy, 2000);

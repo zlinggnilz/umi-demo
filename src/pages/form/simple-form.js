@@ -84,7 +84,7 @@ class FormPage extends PureComponent {
         <Card title="普通表单" style={{ marginBottom: 24 }}>
           <CommonForm formAttr={formAttr} data={{}} onSubmit={this.handleSubmit1} loading={formLoading1} />
         </Card>
-        <Card title="普通表单">
+        <Card title="普通表单 - 有值">
           <CommonForm formAttr={formAttr} data={data} onSubmit={this.handleSubmit2} loading={formLoading2} />
         </Card>
       </Fragment>

@@ -16,10 +16,10 @@ class MultiFormPage extends PureComponent {
   render() {
     return (
       <Fragment>
-        <Card title="表单 - 无默认值" style={{ marginBottom: 24 }}>
+        <Card title="表单 - 无值" style={{ marginBottom: 24 }}>
           <FormBlank {...this.props} />
         </Card>
-        <Card title="表单 - 有默认值">
+        <Card title="表单 - 有值">
           <FormValue {...this.props} />
         </Card>
       </Fragment>

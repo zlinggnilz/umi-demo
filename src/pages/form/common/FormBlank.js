@@ -49,7 +49,7 @@ class FormBlank extends PureComponent {
 
   render() {
     const { formLoading1 } = this.props;
-    return <MultiForm name="formBlank" key="desc" data={{}} formAttr={formAttr} onSubmit={this.handleSubmit} loading={formLoading1} />;
+    return <MultiForm key="desc" data={{}} formAttr={formAttr} onSubmit={this.handleSubmit} loading={formLoading1} />;
   }
 }
 

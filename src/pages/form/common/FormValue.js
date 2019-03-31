@@ -62,7 +62,7 @@ class FormValue extends PureComponent {
   render() {
     const { formLoading2 } = this.props;
 
-    return <MultiForm name="formValue" key="desc" data={formData} formAttr={formAttr} onSubmit={this.handleSubmit} loading={formLoading2} />;
+    return <MultiForm key="desc" data={formData} formAttr={formAttr} onSubmit={this.handleSubmit} loading={formLoading2} />;
   }
 }
 

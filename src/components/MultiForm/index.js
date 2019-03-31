@@ -1,43 +1,30 @@
 import React, { PureComponent, Fragment } from 'react';
-import { connect } from 'dva';
 import Card from '@/components/Card';
 import { Form, Button, Row, Col, Icon } from 'antd';
 import CreateForm from '@/components/CreateForm';
-import { get, map, set } from 'lodash';
+import { get, map, set, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 
 const keyObj = {};
 
-@connect(({ multiform }) => ({
-  formKeys: multiform,
-}))
 @Form.create()
 class MultiLevelForm extends PureComponent {
   static propTypes = {
-    name: PropTypes.string, // 页面有多个多级表单，`name`必须不一样
-    data: PropTypes.any,
-    dispatch: PropTypes.func.isRequired,
-    form: PropTypes.any,
+    data: PropTypes.object,
     formAttr: PropTypes.array,
+    loading: PropTypes.bool,
     onSubmit: PropTypes.func,
   };
 
-  static defaultProps = {
-    name: 'multiform',
+  state = {
+    formKeys: {},
   };
+
+  formKeys = {};
 
   componentDidMount() {
     const { data } = this.props;
     this.handleAttr('setKey', data);
-  }
-
-  componentWillUnmount() {
-    const { dispatch, name } = this.props;
-    // 删除设置的formkey
-    dispatch({
-      type: 'multiform/delKey',
-      payload: name,
-    });
   }
 
   handleSubmit = e => {
@@ -54,14 +41,14 @@ class MultiLevelForm extends PureComponent {
   };
 
   handleAttr(type = 'setKey', data) {
-    const { name, formAttr } = this.props;
+    const { formAttr } = this.props;
 
     const obj = {};
 
     const getForm = (record, parrentKey = '') => {
       if (!record) return;
       if (record.multi) {
-        const attrKey = `${name}-${parrentKey}-${record.key}-multiFormKey`;
+        const attrKey = `formKey-${parrentKey}-${record.key}-multiFormKey`;
         const recordData = get(data, `${parrentKey}[${record.key}]`, []);
         let recordKeyArr;
         if (type === 'setKey') {
@@ -88,6 +75,7 @@ class MultiLevelForm extends PureComponent {
 
     formAttr.forEach(attr => getForm(attr, ''));
     if (type === 'setKey') {
+      this.formKeys = obj;
       this.setItemKey(obj);
     } else {
       return data;
@@ -95,49 +83,33 @@ class MultiLevelForm extends PureComponent {
   }
 
   addItem = itemKey => {
-    const { formKeys, dispatch } = this.props;
-    const keys = formKeys[itemKey];
+    const keys = this.formKeys[itemKey];
     const nextKeys = keys.concat(++keyObj[itemKey]);
 
-    dispatch({
-      type: 'multiform/setKey',
-      payload: { [itemKey]: nextKeys },
-    });
+    this.setItemKey({ [itemKey]: nextKeys });
   };
 
   removeItem = (itemKey, value) => {
-    const { formKeys, dispatch } = this.props;
-
-    const keys = formKeys[itemKey];
+    const keys = this.formKeys[itemKey];
     if (keys.length === 1) {
       return;
     }
 
-    dispatch({
-      type: 'multiform/setKey',
-      payload: { [itemKey]: keys.filter(key => key !== value) },
-    });
+    this.setItemKey({ [itemKey]: keys.filter(key => key !== value) });
   };
 
   setItemKey = obj => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'multiform/setKey',
-      payload: obj,
+    this.formKeys = { ...this.formKeys, ...obj };
+    this.setState({
+      formKeys: this.formKeys,
     });
   };
 
   getItemKeyValue = itemKey => {
-    const { formKeys } = this.props;
-    if (itemKey in keyObj) {
-      const v = formKeys[itemKey];
-      return v;
-    }
-    keyObj[itemKey] = 0;
-    this.setItemKey({
-      [itemKey]: [0],
-    });
-    return [0];
+    // if (itemKey in keyObj) {
+    const v = this.state.formKeys[itemKey];
+    return v || [0];
+    // }
   };
 
   getFormItem = (record, parrentKey = '', ark = null) => {
@@ -166,7 +138,6 @@ class MultiLevelForm extends PureComponent {
   };
 
   getRenderForm = (record, parrentKey = '') => {
-    const { name } = this.props;
     const DelBtn = ({ itemKey, value }) => (
       <a
         onClick={() => {
@@ -192,7 +163,7 @@ class MultiLevelForm extends PureComponent {
     );
     if (!record) return null;
     if (record.multi) {
-      const attrKey = `${name}-${parrentKey}-${record.key}-multiFormKey`;
+      const attrKey = `formKey-${parrentKey}-${record.key}-multiFormKey`;
       const attrKeyArr = this.getItemKeyValue(attrKey);
       const rend = map(attrKeyArr, ark => (
         <Card
@@ -222,11 +193,15 @@ class MultiLevelForm extends PureComponent {
   };
 
   render() {
-    const { loading, formAttr } = this.props;
+    const {
+      loading,
+      formAttr,
+      form: { getFieldDecorator },
+    } = this.props;
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        {map(formAttr, (attr, index) => this.getRenderForm(attr, '', index))}
+        {!isEmpty(this.state.formKeys) && map(formAttr, (attr, index) => this.getRenderForm(attr, '', index))}
 
         <div className="text-center" style={{ marginTop: 24 }}>
           <Button htmlType="submit" type="primary" className="btn-form" loading={loading}>
