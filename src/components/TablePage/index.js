@@ -27,7 +27,6 @@ export default class TablePage extends PureComponent {
       page: props.page,
       total: props.total,
       size: props.pageSize,
-      showTable: false,
     };
     this.payload = {};
   }
@@ -50,7 +49,7 @@ export default class TablePage extends PureComponent {
     const { size } = this.state;
     if (!type) return;
     this.payload = payload;
-    this.setState({ page, showTable: true });
+    this.setState({ page });
     dispatch({
       type,
       payload: { page: page - 1, size, ...payload },
@@ -76,9 +75,8 @@ export default class TablePage extends PureComponent {
   }
 
   render() {
-    const { size, total, page, pagination, showTable } = this.state;
+    const { size, total, page, pagination } = this.state;
     const { rowKey } = this.props;
-    if (!showTable) return null;
     return (
       <Table
         {...this.props}
