@@ -7,7 +7,7 @@ import { isEmpty, map } from 'lodash';
 const { Description } = DescriptionList;
 
 @connect(({ info, loading }) => ({
-  accountInfo: info.info,
+  accountInfo: info.info || {},
   accountLoading: loading.effects['info/fetchInfo'],
 }))
 class Account extends PureComponent {

@@ -1,15 +1,18 @@
 // https://umijs.org/config/
 import os from 'os';
+import slash from 'slash2';
 import pageRoutes from './router.config';
 import webpackPlugin from './plugin.config';
 import defaultSettings from '../src/defaultSettings';
-import slash from 'slash2';
+
+const cssExtract = require('mini-css-extract-plugin');
 
 const { pwa, primaryColor } = defaultSettings;
 const { APP_TYPE, TEST } = process.env;
 
 const theme = {
   'primary-color': '#004771',
+  'primary-1': '#d8e2e4',
   'border-radius-base': 0,
   'border-radius-sm': 0,
   'btn-border-radius-base': 0,
@@ -67,6 +70,7 @@ const plugins = [
 ];
 
 export default {
+  history: 'hash',
   // add for transfer to umi
   plugins,
   define: {
@@ -115,9 +119,24 @@ export default {
       return localName;
     },
   },
-  manifest: {
-    basePath: '/',
-  },
+  // manifest: {
+  //   basePath: '/max/',
+  // },
+
+  // base: '/max/',
+  // publicPath: '/max/',
+  // outputPath: './dist/max',
 
   // chainWebpack: webpackPlugin,
+  chainWebpack(config) {
+    if (process.env.NODE_ENV === 'production') {
+      config.output.filename('static/js/[name].[chunkhash:8].js').chunkFilename('static/js/[name].[chunkhash:8].chunk.js');
+      config.plugin('extract-css').use(cssExtract, [
+        {
+          filename: 'static/css/[name].[contenthash:8].css',
+          chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+        },
+      ]);
+    }
+  },
 };

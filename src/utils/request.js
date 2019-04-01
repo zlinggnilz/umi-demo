@@ -1,9 +1,10 @@
 /**
  * request 网络请求工具
- * 更详细的 api 文档: https://github.com/umijs/umi-request
+ * 更详细的api文档: https://bigfish.alipay.com/doc/api#request
  */
 import { extend } from 'umi-request';
-import { notification } from 'antd';
+import { message } from 'antd';
+import router from 'umi/router';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -31,10 +32,36 @@ const errorHandler = error => {
   const errortext = codeMessage[response.status] || response.statusText;
   const { status, url } = response;
 
-  notification.error({
-    message: `请求错误 ${status}: ${url}`,
-    description: errortext,
-  });
+  if (status === 401) {
+    // notification.error({
+    //   message: '未登录或登录已过期，请重新登录。',
+    // });
+    // @HACK
+    /* eslint-disable no-underscore-dangle */
+    // window.g_app._store.dispatch({
+    //   type: 'login/logout',
+    // });
+    return;
+  }
+  // notification.error({
+  //   message: `请求错误 ${status}: ${url}`,
+  //   description: errortext,
+  // });
+  message.error(errortext);
+  // environment should not be used
+  if (status === 403) {
+    router.push('/exception/403');
+    return;
+  }
+  if (status <= 504 && status >= 500) {
+    router.push('/exception/500');
+    return;
+  }
+  if (status >= 404 && status < 422) {
+    console.log('404');
+    return Promise.reject(response);
+    // router.push('/exception/404');
+  }
 };
 
 /**
@@ -43,6 +70,21 @@ const errorHandler = error => {
 const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  timeout: 10000,
 });
+
+request.interceptors.response.use(
+  (response, options) => {
+    console.log('response', response);
+    return response;
+  },
+  error => {
+    console.log('error', error);
+    Promise.reject(error);
+  }
+);
 
 export default request;

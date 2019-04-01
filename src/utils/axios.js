@@ -12,12 +12,11 @@ const service = axios.create({
 
 // request interceptor
 axios.interceptors.request.use(
-  config => {
-    console.log(config);
-    return config;
-  },
+  config =>
+    // console.log(config);
+    config,
   error => {
-    console.log(error);
+    console.log('request', error);
     return Promise.reject(error);
   }
 );
@@ -25,23 +24,21 @@ axios.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    // const res = response.data;
+    const { status } = response;
+
+    console.log('response', response);
+
+    if (status !== 200) {
+      return Promise.reject(response);
+    }
 
     const res = {
       success: true,
-      code: 200,
+      // code: 200,
       message: '',
       result: response.data,
     };
 
-    if (res.code !== 200) {
-      message.error(res.message, 5 * 1000);
-
-      if (res.code === 401 || res.code === 403) {
-        // 跳转到登录页
-      }
-      return Promise.reject(res.message);
-    }
     if (!res.success) {
       // success 不是true 的情况
       message.error(res.message);
