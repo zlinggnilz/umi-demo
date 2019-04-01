@@ -16,6 +16,11 @@ class MultiLevelForm extends PureComponent {
     onSubmit: PropTypes.func,
   };
 
+  static defaultPorps = {
+    data: {},
+    formAttr: [],
+  };
+
   state = {
     formKeys: {},
   };
@@ -193,11 +198,7 @@ class MultiLevelForm extends PureComponent {
   };
 
   render() {
-    const {
-      loading,
-      formAttr,
-      form: { getFieldDecorator },
-    } = this.props;
+    const { loading, formAttr } = this.props;
 
     return (
       <Form onSubmit={this.handleSubmit}>
