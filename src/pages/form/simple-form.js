@@ -67,6 +67,7 @@ class FormPage extends PureComponent {
       {
         label: '毕业',
         key: 'graduate',
+        type: 'int',
         defaultValue: '2017',
       },
       {

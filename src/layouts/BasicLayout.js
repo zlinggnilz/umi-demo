@@ -113,10 +113,11 @@ class BasicLayout extends React.PureComponent {
     if (!currRouterData) {
       return 'Max';
     }
-    const pageName = formatMessage({
-      id: currRouterData.locale || currRouterData.name,
-      defaultMessage: currRouterData.name,
-    });
+    const pageName = currRouterData.name;
+    // const pageName = formatMessage({
+    //   id: currRouterData.locale || currRouterData.name,
+    //   defaultMessage: currRouterData.name,
+    // });
 
     return `${pageName} - Max`;
   };

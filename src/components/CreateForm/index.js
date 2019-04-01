@@ -10,19 +10,20 @@ const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 
 const CreateForm = props => {
-  const { getFieldDecorator, required, name, label, dataSource, options, fieldProps, showItem, custom, component } = props;
+  const { getFieldDecorator, required, message, name, label, dataSource, options, fieldProps, showItem, custom, component } = props;
 
-  let { placeholder, rules, type, message, defaultValue } = props;
+  let { placeholder, rules, type, defaultValue } = props;
 
   const key = name;
   placeholder = placeholder || label;
 
   type = type.toLowerCase();
 
-  message = message || (required ? 'This field is required' : '');
+  // message = message || (required ? 'This field is required' : '');
+  // message = type==='email'?'This field is not a valid email':message;
   const obj = {
     required,
-    message,
+    message: message || 'This field is required',
   };
 
   if ((type === 'text' || type === 'email') && !custom) {
@@ -30,8 +31,11 @@ const CreateForm = props => {
     obj.transform = v => (v || '').trim();
   }
 
-  const setObj = v => {
-    if (!rules) obj.type = v;
+  const setObj = (v, msg) => {
+    if (!rules) {
+      obj.type = v;
+      obj.message = message || msg;
+    }
   };
 
   // fieldProps = { ...fieldProps, placeholder: placeholder };
@@ -45,7 +49,7 @@ const CreateForm = props => {
     } else {
       switch (type) {
         case 'email':
-          setObj('email');
+          setObj('email', 'This field is not a valid email');
           field = textItem;
           break;
 
@@ -105,14 +109,14 @@ const CreateForm = props => {
           break;
 
         case 'int':
-          setObj('integer');
+          setObj('integer', 'This field is not an integer');
           defaultValue = defaultValue !== undefined ? Number(defaultValue) : defaultValue;
           field = <InputNumber min={0} precision={0} style={{ width: '100%' }} placeholder={placeholder} {...fieldProps} />;
           break;
 
         case 'float':
         case 'number':
-          setObj('float');
+          setObj('float', 'This field is not a float');
           defaultValue = defaultValue !== undefined ? Number(defaultValue) : defaultValue;
           field = <InputNumber min={0} style={{ width: '100%' }} placeholder={placeholder} {...fieldProps} />;
           break;
