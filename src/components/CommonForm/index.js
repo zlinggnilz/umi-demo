@@ -7,14 +7,16 @@ import PropTypes from 'prop-types';
 @Form.create()
 class MultiLevelForm extends PureComponent {
   static propTypes = {
-    name: PropTypes.string, // 页面有多个多级表单，`name`必须不一样
-    data: PropTypes.any,
-    form: PropTypes.any,
+    data: PropTypes.object,
     formAttr: PropTypes.array,
+    loading: PropTypes.bool,
     onSubmit: PropTypes.func,
   };
 
-  componentWillUnmount() {}
+  static defaultPorps = {
+    data: {},
+    formAttr: [],
+  };
 
   handleSubmit = e => {
     const { form, onSubmit } = this.props;
@@ -28,7 +30,7 @@ class MultiLevelForm extends PureComponent {
   };
 
   renderForm() {
-    const { name, form, formAttr, data } = this.props;
+    const { form, formAttr, data } = this.props;
     const { getFieldDecorator } = form;
 
     return (

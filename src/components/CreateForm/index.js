@@ -30,7 +30,7 @@ const CreateForm = props => {
     obj.transform = v => (v || '').trim();
   }
 
-  const setObj = function(v) {
+  const setObj = v => {
     if (!rules) obj.type = v;
   };
 
