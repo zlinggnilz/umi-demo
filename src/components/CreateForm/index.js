@@ -66,8 +66,8 @@ const CreateForm = props => {
             <Select placeholder={placeholder} {...fieldProps}>
               {!!dataSource.length &&
                 dataSource.map(opt => (
-                  <Option key={opt.value} value={opt.value}>
-                    {opt.name || opt.value}
+                  <Option key={opt.key} value={opt.key}>
+                    {opt.label || opt.key}
                   </Option>
                 ))}
             </Select>
@@ -87,8 +87,8 @@ const CreateForm = props => {
             <RadioGroup>
               {!!dataSource.length &&
                 dataSource.map(opt => (
-                  <Radio key={opt.value} value={opt.value} {...fieldProps}>
-                    {opt.name || opt.value}
+                  <Radio key={opt.key} value={opt.key} {...fieldProps}>
+                    {opt.label || opt.key}
                   </Radio>
                 ))}
             </RadioGroup>
@@ -100,8 +100,8 @@ const CreateForm = props => {
             <CheckboxGroup>
               {!!dataSource.length &&
                 dataSource.map(opt => (
-                  <Checkbox key={opt.value} value={opt.value} {...fieldProps}>
-                    {opt.name || opt.value}
+                  <Checkbox key={opt.key} value={opt.key} {...fieldProps}>
+                    {opt.label || opt.key}
                   </Checkbox>
                 ))}
             </CheckboxGroup>
@@ -160,8 +160,8 @@ CreateForm.propTypes = {
   type: PropTypes.string.isRequired,
   dataSource: PropTypes.arrayOf(
     PropTypes.shape({
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      name: PropTypes.string,
+      key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      label: PropTypes.string,
     })
   ), // select或radio-group的选项
   component: PropTypes.element,
