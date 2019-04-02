@@ -1,7 +1,7 @@
 import request from '@/utils/axios';
 
 export async function fetchInfo() {
-  return request({ url: '/api/accountInfo', method: 'get' });
+  return request('/api/accountInfo', { method: 'get' });
 }
 
 export async function formSubmit() {
