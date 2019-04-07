@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Radio, Checkbox } from 'antd';
 import PropTypes from 'prop-types';
+import { toString } from 'lodash';
 import { Input, Textarea, Select, InputNumber } from '../Field';
 
 const FormItem = Form.Item;
@@ -10,7 +11,7 @@ const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;
 
 const CreateForm = props => {
-  const { getFieldDecorator, required, message, name, label, dataSource, options, fieldProps, showItem, custom, component } = props;
+  const { getFieldDecorator, required, message, name, label, dataSource, formProps, fieldProps, showItem, custom, component, disabled } = props;
 
   let { placeholder, rules, type, defaultValue } = props;
 
@@ -26,8 +27,12 @@ const CreateForm = props => {
     message: message || 'This field is required',
   };
 
+  if (defaultValue === null) {
+    defaultValue = undefined;
+  }
+
   if ((type === 'text' || type === 'email') && !custom) {
-    defaultValue = defaultValue !== undefined ? `${defaultValue}` : defaultValue;
+    defaultValue = defaultValue !== undefined ? toString(defaultValue) : defaultValue;
     obj.transform = v => (v || '').trim();
   }
 
@@ -45,7 +50,9 @@ const CreateForm = props => {
     const textItem = <Input type="text" placeholder={placeholder} {...fieldProps} />;
 
     if (custom) {
-      field = component;
+      field = component || <span />;
+    } else if (disabled) {
+      field = <span>{defaultValue}</span>;
     } else {
       switch (type) {
         case 'email':
@@ -63,11 +70,11 @@ const CreateForm = props => {
 
         case 'select':
           field = (
-            <Select placeholder={placeholder} {...fieldProps}>
+            <Select placeholder={placeholder} allowClear {...fieldProps}>
               {!!dataSource.length &&
                 dataSource.map(opt => (
                   <Option key={opt.key} value={opt.key}>
-                    {opt.label || opt.key}
+                    {opt.label || opt.kye}
                   </Option>
                 ))}
             </Select>
@@ -137,7 +144,7 @@ const CreateForm = props => {
 
   if (showItem) {
     return (
-      <FormItem label={label} {...options}>
+      <FormItem label={label} {...formProps}>
         {createField()}
       </FormItem>
     );
@@ -155,7 +162,9 @@ CreateForm.propTypes = {
   required: PropTypes.bool, // 是否必填,默认true
   showItem: PropTypes.bool, // 是否显示formItem,默认true
   custom: PropTypes.bool, // 是否使用自定义组件,默认true
+  disabled: PropTypes.bool, //
   fieldProps: PropTypes.object, // field的props
+  formProps: PropTypes.object, // field的props
   rules: PropTypes.array, // 验证rules
   type: PropTypes.string.isRequired,
   dataSource: PropTypes.arrayOf(
@@ -172,7 +181,9 @@ CreateForm.defaultProps = {
   required: true,
   showItem: true,
   custom: false,
+  disabled: false,
   fieldProps: {},
+  formProps: {},
   dataSource: [],
 };
 
