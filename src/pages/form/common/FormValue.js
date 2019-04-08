@@ -9,18 +9,44 @@ const formAttr = [
     key: 'country',
     multi: true,
     items: [{ label: '国家名称', key: 'name' }, { label: '面积', key: 'area', required: false }],
-    children: {
-      label: '省份',
-      key: 'province',
-      // multi: true,
-      items: [{ label: '省份名称', key: 'name' }, { label: '人口', key: 'people' }],
-      children: {
-        label: '城市',
-        key: 'city',
+    children: [
+      {
+        label: '省份',
+        key: 'province',
         multi: true,
-        items: [{ label: '城市名称', key: 'name' }, { label: '邮编', key: 'zip' }],
+        items: [{ label: '省份名称', key: 'name' }, { label: '人口', key: 'people' }],
+        children: [
+          {
+            label: '城市',
+            key: 'city',
+            multi: true,
+            items: [{ label: '城市名称', key: 'name' }, { label: '邮编', key: 'zip' }],
+          },
+        ],
       },
-    },
+    ],
+  },
+  {
+    label: '国家2',
+    key: 'country2',
+    multi: true,
+    items: [{ label: '国家名称', key: 'name' }, { label: '面积', key: 'area', required: false }],
+    children: [
+      {
+        label: '省份',
+        key: 'province',
+        // multi: true,
+        items: [{ label: '省份名称', key: 'name' }, { label: '人口', key: 'people' }],
+        children: [
+          {
+            label: '城市',
+            key: 'city',
+            multi: true,
+            items: [{ label: '城市名称', key: 'name' }, { label: '邮编', key: 'zip' }],
+          },
+        ],
+      },
+    ],
   },
 ];
 

@@ -56,7 +56,17 @@ class MultiLevelForm extends PureComponent {
 
     const obj = {};
 
-    const getForm = (record, parrentKey = '') => {
+    const handleChildrenAttr = (rChildren, pKey, action) => {
+      if (Array.isArray(rChildren)) {
+        rChildren.forEach(item => {
+          action(item, pKey);
+        });
+      } else {
+        console.error('Children record should be Array');
+      }
+    };
+
+    const handleAttrForm = (record, parrentKey = '') => {
       if (!record) return;
       if (record.multi) {
         const attrKey = `formKey-${parrentKey}-${record.key}-multiFormKey`;
@@ -77,14 +87,14 @@ class MultiLevelForm extends PureComponent {
           }
         }
         recordKeyArr.forEach(ark => {
-          record.children && getForm(record.children, `${parrentKey}[${record.key}][${ark}]`);
+          record.children && handleChildrenAttr(record.children, `${parrentKey}[${record.key}][${ark}]`, handleAttrForm);
         });
       } else {
-        record.children && getForm(record.children, `${parrentKey}[${record.key}]`);
+        record.children && handleChildrenAttr(record.children, `${parrentKey}[${record.key}]`, handleAttrForm);
       }
     };
 
-    formAttr.forEach(attr => getForm(attr, ''));
+    formAttr.forEach(attr => handleAttrForm(attr, ''));
     if (type === 'setKey') {
       this.formKeys = obj;
       this.setItemKey(obj);
@@ -140,76 +150,92 @@ class MultiLevelForm extends PureComponent {
         </Col>
       );
     };
+    const getRenderChildren = rec => rec.children && map(rec.children, item => this.getRenderForm(item, itemKey));
+    if (record.items) {
+      return (
+        <Fragment key={`${itemKey}-row`}>
+          <Row type="flex" gutter={32}>
+            {map(record.items, item => getItem(item))}
+          </Row>
+          {getRenderChildren(record)}
+        </Fragment>
+      );
+    }
+    if (record.children) {
+      return getRenderChildren(record);
+    }
     return (
       <Fragment key={`${itemKey}-row`}>
-        <Row type="flex" gutter={32}>
-          {record.items ? map(record.items, item => getItem(item)) : getItem(record)}
-        </Row>
-        {record.children && this.getRenderForm(record.children, itemKey)}
+        {getItem(record)}
+        {getRenderChildren(record)}
       </Fragment>
     );
   };
 
+  getDelBtn = ({ itemKey, value }) => (
+    <a
+      onClick={() => {
+        this.removeItem(itemKey, value);
+      }}
+    >
+      <Icon type="delete" />
+      Delete
+    </a>
+  );
+
+  getAddBtn = ({ attrKey, label }) => (
+    <Button
+      type="primary"
+      ghost
+      onClick={() => {
+        this.addItem(attrKey);
+      }}
+      className="btn-form"
+    >
+      <Icon type="plus" />
+      {label}
+    </Button>
+  );
+
   getRenderForm = (record, parrentKey = '') => {
-    const DelBtn = ({ itemKey, value }) => (
-      <a
-        onClick={() => {
-          this.removeItem(itemKey, value);
-        }}
-      >
-        <Icon type="delete" />
-        Delete
-      </a>
-    );
-    const AddBtn = ({ attrKey, label }) => (
-      <Button
-        type="primary"
-        ghost
-        onClick={() => {
-          this.addItem(attrKey);
-        }}
-        className="btn-form"
-      >
-        <Icon type="plus" />
-        {label}
-      </Button>
-    );
     if (!record) return null;
     if (record.multi) {
       const attrKey = `formKey-${parrentKey}-${record.key}-multiFormKey`;
       const attrKeyArr = this.getItemKeyValue(attrKey);
-      const rend = map(attrKeyArr, ark => (
-        <Card
-          title={record.label}
-          type="inner"
-          style={{ marginBottom: 24 }}
-          extra={attrKeyArr.length > 1 ? <DelBtn itemKey={attrKey} value={ark} /> : null}
-          key={`${parrentKey}${ark}-${record.key}`}
-          bodyStyle={{ paddingBottom: 0 }}
-        >
-          {this.getFormItem(record, parrentKey, ark)}
-        </Card>
+      const rend = map(attrKeyArr, (ark, index) => (
+        <Col span={24} key={`${parrentKey}${ark}-${record.key}`}>
+          <Card
+            title={`${record.label} ${index + 1}`}
+            type="inner"
+            style={{ marginBottom: 24 }}
+            extra={attrKeyArr.length > 1 ? this.getDelBtn({ itemKey: attrKey, value: ark }) : null}
+            bodyStyle={{ paddingBottom: 0 }}
+          >
+            {this.getFormItem(record, parrentKey, ark)}
+          </Card>
+        </Col>
       ));
       const add = (
-        <div className="text-center" key={`${parrentKey}-${record.key}-addbtn`} style={{ marginBottom: 24 }}>
-          <AddBtn attrKey={attrKey} label={record.label} />
-        </div>
+        <Col span={24} key={`${parrentKey}-${record.key}-addbtn`}>
+          <div className="text-center" style={{ marginBottom: 24 }}>
+            {this.getAddBtn({ attrKey, label: record.label })}
+          </div>
+        </Col>
       );
       rend.push(add);
       return rend;
     }
     if (record.items) {
       return (
-        <Card
-          title={record.label}
-          type="inner"
-          style={{ marginBottom: 24 }}
-          bodyStyle={{ paddingBottom: 0 }}
-          key={`${parrentKey}-${record.key}-card`}
-        >
-          {this.getFormItem(record, parrentKey)}
-        </Card>
+        <Col span={24} key={`${parrentKey}-${record.key}-card`}>
+          <Card title={record.label} type="inner" style={{ marginBottom: 24 }} bodyStyle={{ paddingBottom: 0 }}>
+            {this.getFormItem(record, parrentKey)}
+          </Card>
+        </Col>
       );
+    }
+    if (record.children) {
+      return this.getFormItem(record, parrentKey);
     }
     return this.getFormItem(record, parrentKey);
   };
@@ -219,10 +245,11 @@ class MultiLevelForm extends PureComponent {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        {!isEmpty(this.state.formKeys)
-          ? map(formAttr, (attr, index) => this.getRenderForm(attr, '', index))
-          : 'Please confirm the form is Multi Level Form'}
-
+        <Row type="flex" gutter={32}>
+          {!isEmpty(this.state.formKeys)
+            ? map(formAttr, (attr, index) => this.getRenderForm(attr, '', index))
+            : 'Please confirm the form is Multi Level Form'}
+        </Row>
         <div className="text-center form-action" style={{ marginTop: 24 }}>
           {submitAction || (
             <Button htmlType="submit" type="primary" className="btn-form" loading={loading}>
