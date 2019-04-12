@@ -88,12 +88,6 @@ class MultiLevelForm extends PureComponent {
 
           const recordVals = get(data, `${parrentKey}[${record.key}]`, []) || [];
           if (recordVals.length > 1) {
-            // const formItemKey = `formKey-${parrentKey}-${record.key}-multiFormKey`;
-            // const formKeyArr = this.formKeys[formItemKey];
-            // const newArr = [];
-            // formKeyArr.forEach(i => {
-            //   newArr.push(recordVals[i]);
-            // });
             set(data, `${parrentKey}[${record.key}]`, recordVals.filter(item => item));
           }
         }
@@ -280,7 +274,9 @@ class MultiLevelForm extends PureComponent {
     this.props.form.setFieldsValue(values);
   };
 
-  getFieldsValue = () => this.props.form.getFieldsValue();
+  getFieldsValue = f => this.props.form.getFieldsValue(f);
+
+  getFieldValue = s => s && this.props.form.getFieldValue(s);
 
   render() {
     const { loading, formAttr, submitAction, cancelAction, submitText } = this.props;

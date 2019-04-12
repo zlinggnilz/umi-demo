@@ -44,6 +44,7 @@ const CreateForm = props => {
   }
 
   if ((type === 'text' || type === 'email' || type === 'textarea') && !custom) {
+    // defaultValue = defaultValue !== undefined ? toString(defaultValue) : defaultValue;
     obj.transform = v => `${v || ''}`.trim();
   }
 
@@ -171,29 +172,27 @@ const CreateForm = props => {
 };
 
 CreateForm.propTypes = {
-  component: PropTypes.element,
-  custom: PropTypes.bool,
+  getFieldDecorator: PropTypes.func.isRequired,
+  name: PropTypes.string, // key值
+  defaultValue: PropTypes.any, // 默认值
+  label: PropTypes.any, // label
+  placeholder: PropTypes.string, // 默认跟label相同
+  message: PropTypes.any, // 报错message,默认:This field is required
+  required: PropTypes.bool, // 是否必填,默认true
+  showItem: PropTypes.bool, // 是否显示formItem,默认true
+  custom: PropTypes.bool, // 是否使用自定义组件,默认true
+  disabled: PropTypes.bool, //
+  fieldProps: PropTypes.object, // field的props
+  formProps: PropTypes.object, // field的props
+  rules: PropTypes.array, // 验证rules
+  type: PropTypes.string.isRequired,
   dataSource: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       label: PropTypes.string,
     })
-  ),
-  defaultValue: PropTypes.any,
-  disabled: PropTypes.bool,
-  fieldProps: PropTypes.object,
-  formProps: PropTypes.object,
-  getFieldDecorator: PropTypes.func.isRequired,
-  key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  label: PropTypes.string,
-  message: PropTypes.string,
-  name: PropTypes.string,
-  parentKey: PropTypes.string,
-  placeholder: PropTypes.string,
-  required: PropTypes.bool,
-  rules: PropTypes.array,
-  showItem: PropTypes.bool,
-  type: PropTypes.string.isRequired,
+  ), // select或radio-group的选项
+  component: PropTypes.element,
 };
 CreateForm.defaultProps = {
   type: 'text',

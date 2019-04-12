@@ -71,7 +71,9 @@ class CommonForm extends PureComponent {
     this.props.form.setFieldsValue(values);
   };
 
-  getFieldsValue = () => this.props.form.getFieldsValue();
+  getFieldsValue = f => this.props.form.getFieldsValue(f);
+
+  getFieldValue = s => s && this.props.form.getFieldValue(s);
 
   render() {
     const { loading, cancelAction, submitAction, submitText, children } = this.props;
