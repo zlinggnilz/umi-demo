@@ -1,21 +1,28 @@
-import React, { PureComponent, Fragment } from 'react';
-import { Form, Button, Row, Col, Icon } from 'antd';
+import React, { PureComponent } from 'react';
+import { Form, Button, Row, Col } from 'antd';
 import CreateForm from '@/components/CreateForm';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
+import { formTrim } from '@/utils/form';
 
 @Form.create()
-class MultiLevelForm extends PureComponent {
+class CommonForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object,
     formAttr: PropTypes.array,
     loading: PropTypes.bool,
     onSubmit: PropTypes.func,
+    cancelAction: PropTypes.element,
+    submitAction: PropTypes.element,
+    submitText: PropTypes.string,
   };
 
   static defaultPorps = {
     data: {},
     formAttr: [],
+    cancelAction: null,
+    submitAction: null,
+    submitText: 'SAVE',
   };
 
   handleSubmit = e => {
@@ -23,10 +30,16 @@ class MultiLevelForm extends PureComponent {
 
     e.preventDefault();
 
-    form.validateFieldsAndScroll((err, values) => {
+    form.validateFieldsAndScroll({ scroll: { offsetTop: 100 } }, (err, values) => {
       if (err) return;
-      onSubmit && onSubmit(values);
+      const data = formTrim(values);
+      onSubmit && onSubmit(data);
     });
+  };
+
+  handleReset = () => {
+    const { form } = this.props;
+    form.resetFields();
   };
 
   renderForm() {
@@ -36,11 +49,16 @@ class MultiLevelForm extends PureComponent {
     return (
       <Row type="flex" gutter={32}>
         {formAttr.map(item => {
-          const { label, key, valueFunc, defaultValue, ...rest } = item;
+          const { label, key, valueFunc, defaultValue, col, style, ...rest } = item;
+
           const v = get(data, key);
-          const dv = v !== undefined ? (valueFunc ? valueFunc(v) : v) : defaultValue;
+          let dv = v !== undefined && v !== null ? v : defaultValue;
+          dv = valueFunc ? valueFunc(v, data) : dv;
+
+          const responsive = col || { sm: 24, md: 12, lg: 8 };
+
           return (
-            <Col sm={24} md={12} lg={8} key={`col${item.key}`}>
+            <Col {...responsive} key={`col${item.key}`} style={style}>
               <CreateForm getFieldDecorator={getFieldDecorator} name={key} label={label} {...rest} defaultValue={dv} />
             </Col>
           );
@@ -49,20 +67,33 @@ class MultiLevelForm extends PureComponent {
     );
   }
 
+  setFieldsValue = values => {
+    this.props.form.setFieldsValue(values);
+  };
+
+  getFieldsValue = () => this.props.form.getFieldsValue();
+
   render() {
-    const { loading } = this.props;
+    const { loading, cancelAction, submitAction, submitText, children } = this.props;
     return (
       <Form onSubmit={this.handleSubmit}>
         {this.renderForm()}
-
-        <div className="text-center" style={{ marginTop: 24 }}>
-          <Button htmlType="submit" type="primary" className="btn-form" loading={loading}>
-            提交
-          </Button>
+        {children}
+        <div className="text-center form-action">
+          {submitAction || (
+            <Button htmlType="submit" type="primary" className="btn-form" loading={loading}>
+              {submitText}
+            </Button>
+          )}
+          {cancelAction || (
+            <Button type="primary" ghost onClick={this.handleReset} className="btn-form">
+              RESET
+            </Button>
+          )}
         </div>
       </Form>
     );
   }
 }
 
-export default MultiLevelForm;
+export default CommonForm;

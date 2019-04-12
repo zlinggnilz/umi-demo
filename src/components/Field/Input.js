@@ -9,9 +9,9 @@ class CustomInput extends PureComponent {
     onChange: PropTypes.func,
   };
 
-  handleChange = v => {
+  handleChange = e => {
     const { onChange } = this.props;
-    onChange && onChange(v);
+    onChange && onChange(e);
   };
 
   render() {
