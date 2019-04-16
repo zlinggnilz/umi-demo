@@ -1,0 +1,30 @@
+.centerMode {
+  :global {
+    .swiper-slide {
+      filter: brightness(68%);
+    }
+
+    .swiper-slide-active {
+      position: relative;
+      z-index: 1;
+      filter: brightness(100%);
+
+      img {
+        width: 120%;
+        margin: 0 -10%;
+      }
+    }
+
+    .swiper-wrapper {
+      align-items: center;
+    }
+  }
+}
+
+:global {
+  .swiper-slide {
+    img {
+      width: 100%;
+    }
+  }
+}

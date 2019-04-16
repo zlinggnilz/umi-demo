@@ -53,6 +53,12 @@ export default [
         icon: 'table',
         component: './table',
       },
+      {
+        path: '/banner',
+        name: 'Banner',
+        icon: 'image',
+        component: './banner',
+      },
     ],
   },
 ];
