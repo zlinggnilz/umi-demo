@@ -15,26 +15,18 @@ export default class Banner extends PureComponent {
       slidesPerView: 2,
       spaceBetween: 10,
       centeredSlides: true,
-      on: {
-        slideChange: this.handleChange,
-      },
     };
     return (
       <Card title="Banner">
         <Swipe
           options={option}
-          ref={ref => {
-            this.swiper = ref;
-          }}
           thumbOptions={{
             slidesPerView: 4,
             spaceBetween: 10,
           }}
         >
           {[img1, img2, img3, img4, img5, img6].map(item => (
-            <div key={item} className="swiper-slide">
-              <img src={item} alt="" />
-            </div>
+            {src:item,alt:''}
           ))}
         </Swipe>
       </Card>

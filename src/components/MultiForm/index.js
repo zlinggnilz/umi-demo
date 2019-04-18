@@ -70,11 +70,11 @@ class MultiLevelForm extends PureComponent {
       }
     };
 
-    const handleAttrForm = (record, parrentKey = '') => {
+    const handleAttrForm = (record, parentkey = '') => {
       if (!record) return;
       if (record.multi) {
-        const attrKey = `formKey-${parrentKey}-${record.key}-multiFormKey`;
-        const recordData = get(data, `${parrentKey}[${record.key}]`, []) || [];
+        const attrKey = `formKey-${parentkey}-${record.key}-multiFormKey`;
+        const recordData = get(data, `${parentkey}[${record.key}]`, []) || [];
         let recordKeyArr;
         if (type === 'setKey') {
           recordKeyArr = [0];
@@ -86,16 +86,16 @@ class MultiLevelForm extends PureComponent {
         } else {
           recordKeyArr = this.getItemKeyValue(attrKey);
 
-          const recordVals = get(data, `${parrentKey}[${record.key}]`, []) || [];
+          const recordVals = get(data, `${parentkey}[${record.key}]`, []) || [];
           if (recordVals.length > 1) {
-            set(data, `${parrentKey}[${record.key}]`, recordVals.filter(item => item));
+            set(data, `${parentkey}[${record.key}]`, recordVals.filter(item => item));
           }
         }
         recordKeyArr.forEach(ark => {
-          record.children && handleChildrenAttr(record.children, `${parrentKey}[${record.key}][${ark}]`, handleAttrForm);
+          record.children && handleChildrenAttr(record.children, `${parentkey}[${record.key}][${ark}]`, handleAttrForm);
         });
       } else {
-        record.children && handleChildrenAttr(record.children, `${parrentKey}[${record.key}]`, handleAttrForm);
+        record.children && handleChildrenAttr(record.children, `${parentkey}[${record.key}]`, handleAttrForm);
       }
     };
 
@@ -149,10 +149,10 @@ class MultiLevelForm extends PureComponent {
     return [0];
   };
 
-  getFormItem = (record, parrentKey = '', ark = null) => {
+  getFormItem = (record, parentkey = '', ark = null) => {
     const { form, data } = this.props;
     const { getFieldDecorator } = form;
-    const itemKey = `${parrentKey}[${record.key}]${ark !== null ? `[${ark}]` : ''}`;
+    const itemKey = `${parentkey}[${record.key}]${ark !== null ? `[${ark}]` : ''}`;
     const getItem = item => {
       const { label, key, valueFunc, defaultValue, col, dataSourceFunc, dataSource, ...rest } = item;
       const k = record.items ? `${itemKey}[${key}]` : itemKey;
@@ -171,7 +171,7 @@ class MultiLevelForm extends PureComponent {
           <CreateForm
             getFieldDecorator={getFieldDecorator}
             name={k}
-            parentKey={itemKey}
+            parentkey={itemKey}
             label={label}
             dataSource={dataSourceArr}
             {...rest}
@@ -227,13 +227,13 @@ class MultiLevelForm extends PureComponent {
     </Button>
   );
 
-  getRenderForm = (record, parrentKey = '') => {
+  getRenderForm = (record, parentkey = '') => {
     if (!record) return null;
     if (record.multi) {
-      const attrKey = `formKey-${parrentKey}-${record.key}-multiFormKey`;
+      const attrKey = `formKey-${parentkey}-${record.key}-multiFormKey`;
       const attrKeyArr = this.getItemKeyValue(attrKey);
       const rend = map(attrKeyArr, (ark, index) => (
-        <Col span={24} key={`${parrentKey}${ark}-${record.key}`}>
+        <Col span={24} key={`${parentkey}${ark}-${record.key}`}>
           <Card
             title={`${record.label} ${index + 1}`}
             type="inner"
@@ -241,12 +241,12 @@ class MultiLevelForm extends PureComponent {
             extra={this.getDelBtn({ itemKey: attrKey, value: ark })}
             bodyStyle={{ paddingBottom: 0 }}
           >
-            {this.getFormItem(record, parrentKey, ark)}
+            {this.getFormItem(record, parentkey, ark)}
           </Card>
         </Col>
       ));
       const add = (
-        <Col span={24} key={`${parrentKey}-${record.key}-addbtn`}>
+        <Col span={24} key={`${parentkey}-${record.key}-addbtn`}>
           <div className="text-center" style={{ marginBottom: 24 }}>
             {this.getAddBtn({ attrKey, label: record.label })}
           </div>
@@ -257,17 +257,17 @@ class MultiLevelForm extends PureComponent {
     }
     if (record.items) {
       return (
-        <Col span={24} key={`${parrentKey}-${record.key}-card`}>
+        <Col span={24} key={`${parentkey}-${record.key}-card`}>
           <Card title={record.label} type="inner" style={{ marginBottom: 24 }} bodyStyle={{ paddingBottom: 0 }}>
-            {this.getFormItem(record, parrentKey)}
+            {this.getFormItem(record, parentkey)}
           </Card>
         </Col>
       );
     }
     if (record.children) {
-      return this.getFormItem(record, parrentKey);
+      return this.getFormItem(record, parentkey);
     }
-    return this.getFormItem(record, parrentKey);
+    return this.getFormItem(record, parentkey);
   };
 
   setFieldsValue = values => {
@@ -278,6 +278,8 @@ class MultiLevelForm extends PureComponent {
 
   getFieldValue = s => s && this.props.form.getFieldValue(s);
 
+  getFormKeys = () => this.formItemKeys;
+  
   render() {
     const { loading, formAttr, submitAction, cancelAction, submitText } = this.props;
     this.formItemKeys = [];

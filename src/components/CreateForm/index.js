@@ -24,7 +24,7 @@ const CreateForm = props => {
     custom,
     component,
     disabled,
-    parentKey,
+    parentkey,
   } = props;
 
   let { placeholder, rules, type, defaultValue } = props;
@@ -58,7 +58,7 @@ const CreateForm = props => {
   const createField = () => {
     let field;
     const commonProp = {
-      parentKey,
+      parentkey,
       name,
     };
     const textItem = <Input type="text" placeholder={placeholder} {...commonProp} {...fieldProps} />;

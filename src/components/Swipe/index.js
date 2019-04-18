@@ -1,16 +1,20 @@
 import React, { PureComponent, Fragment } from 'react';
 import Swiper from 'swiper/dist/js/swiper.js';
 import 'swiper/dist/css/swiper.min.css';
+import { map } from 'lodash';
 import PropTypes from 'prop-types';
-import styles from './index.less';
+import styles from './banner.less';
 
 export default class SwipeCustom extends PureComponent {
   static propTypes = {
+    data: PropTypes.array,
     options: PropTypes.object,
+    thumbData: PropTypes.array,
     thumbOptions: PropTypes.object,
   };
 
   static defaultProps = {
+    data: [],
     options: {},
     thumbOptions: {},
   };
@@ -20,7 +24,8 @@ export default class SwipeCustom extends PureComponent {
   thumbSwiper = null;
 
   componentDidMount() {
-    const { options, thumbOptions } = this.props;
+    const { options, thumbOptions, data } = this.props;
+    if (!data.length) return;
     this.swiper = new Swiper(this.swiperEl, {
       loop: true,
       lazy: {
@@ -39,14 +44,20 @@ export default class SwipeCustom extends PureComponent {
       thumbs: {
         swiper: {
           el: this.thumbEl,
-          loop: true,
+          // loop: true,
           lazy: {
             loadPrevNext: true,
           },
-          navigation: {
-            nextEl: this.thumbEl.querySelector('.swiper-button-next'),
-            prevEl: this.thumbEl.querySelector('.swiper-button-prev'),
+          slidesPerView: 6,
+          slidesPerGroup: 1,
+          pagination: {
+            el: this.thumbWrap.querySelector('.swiper-pagination'),
+            clickable: true,
           },
+          // navigation: {
+          //   nextEl: this.thumbWrap.querySelector('.swiper-button-next'),
+          //   prevEl: this.thumbWrap.querySelector('.swiper-button-prev'),
+          // },
           ...thumbOptions,
         },
       },
@@ -54,7 +65,8 @@ export default class SwipeCustom extends PureComponent {
   }
 
   render() {
-    const { children, options, thumbOptions, thumbChidren } = this.props;
+    const { options, thumbOptions, thumbData, data } = this.props;
+    if (!data.length) return null;
     return (
       <Fragment>
         <div
@@ -63,7 +75,13 @@ export default class SwipeCustom extends PureComponent {
             this.swiperEl = ref;
           }}
         >
-          <div className="swiper-wrapper">{children}</div>
+          <div className="swiper-wrapper">
+            {map(data, (item, index) => (
+              <div className="swiper-slide" key={`${item.src}-${index}`}>
+                <img src={item.src} alt={item.alt} />
+              </div>
+            ))}
+          </div>
           {/* <div
             className="swiper-pagination banner-pagination"
             ref={ref => {
@@ -74,15 +92,28 @@ export default class SwipeCustom extends PureComponent {
           <div className="swiper-button-prev swiper-button-white" />
         </div>
         <div
-          className={`swiper-container ${thumbOptions.centeredSlides ? styles.centerMode : ''}`}
+          className={styles.thumWrap}
           ref={ref => {
-            this.thumbEl = ref;
+            this.thumbWrap = ref;
           }}
-          style={{ marginTop: 16 }}
         >
-          <div className="swiper-wrapper">{thumbChidren || children}</div>
-          <div className="swiper-button-next swiper-button-white" />
-          <div className="swiper-button-prev swiper-button-white" />
+          <div
+            className={`swiper-container ${thumbOptions.centeredSlides ? styles.centerMode : ''}`}
+            ref={ref => {
+              this.thumbEl = ref;
+            }}
+          >
+            <div className="swiper-wrapper">
+              {map(thumbData || data, (item, index) => (
+                <div className="swiper-slide" key={`${item.src}-${index}`}>
+                  <img src={item.src} alt={item.alt} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="swiper-pagination" />
+          {/* <div className="swiper-button-next swiper-button-black" />
+          <div className="swiper-button-prev swiper-button-black" /> */}
         </div>
       </Fragment>
     );
