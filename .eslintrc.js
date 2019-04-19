@@ -41,7 +41,6 @@ module.exports = {
     'arrow-parens': ['error', 'as-needed'],
     'no-param-reassign': ['error', { props: false }],
     'no-plusplus': [0],
-    // 'react/prop-types': [2, { ignore: ['children', 'className', 'classes', 'global', 'loading', 'router'] }],
     'react/require-default-props': [0],
     'react/destructuring-assignment': [0],
     'react/sort-comp': [0],
@@ -51,6 +50,8 @@ module.exports = {
     'consistent-return': [0],
     'no-nested-ternary': [0],
     'no-unused-vars': [1],
+    'prefer-promise-reject-errors': [0],
+    'react/no-array-index-key': [0],
   },
   settings: {
     polyfills: ['fetch', 'promises', 'url'],

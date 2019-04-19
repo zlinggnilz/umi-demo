@@ -4,6 +4,7 @@ import CreateForm from '@/components/CreateForm';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { formTrim } from '@/utils/form';
+import styles from './index.less';
 
 @Form.create()
 class CommonForm extends PureComponent {
@@ -20,8 +21,6 @@ class CommonForm extends PureComponent {
   static defaultPorps = {
     data: {},
     formAttr: [],
-    cancelAction: null,
-    submitAction: null,
     submitText: 'SAVE',
   };
 
@@ -49,13 +48,21 @@ class CommonForm extends PureComponent {
     return (
       <Row type="flex" gutter={32}>
         {formAttr.map(item => {
-          const { label, key, valueFunc, defaultValue, col, style, ...rest } = item;
+          const { onlyLabel, label, key, valueFunc, defaultValue, col, style, ...rest } = item;
+
+          const responsive = col || { xs: 24, sm: 12, md: 8 };
+
+          if (onlyLabel) {
+            return (
+              <Col {...responsive} key={`col-label-${item.label}`} style={style}>
+                <div className={`${styles.onlyLabel} flex align-middle`}>{label}</div>
+              </Col>
+            );
+          }
 
           const v = get(data, key);
           let dv = v !== undefined && v !== null ? v : defaultValue;
           dv = valueFunc ? valueFunc(v, data) : dv;
-
-          const responsive = col || { sm: 24, md: 12, lg: 8 };
 
           return (
             <Col {...responsive} key={`col${item.key}`} style={style}>
@@ -77,21 +84,32 @@ class CommonForm extends PureComponent {
 
   render() {
     const { loading, cancelAction, submitAction, submitText, children } = this.props;
+
+    const formSubmitAction =
+      'submitAction' in this.props ? (
+        submitAction
+      ) : (
+        <Button htmlType="submit" type="primary" className="btn-form" loading={loading}>
+          {submitText}
+        </Button>
+      );
+
+    const formCancelAction =
+      'cancelAction' in this.props ? (
+        cancelAction
+      ) : (
+        <Button type="primary" ghost onClick={this.handleReset} className="btn-form">
+          RESET
+        </Button>
+      );
+
     return (
       <Form onSubmit={this.handleSubmit}>
         {this.renderForm()}
         {children}
         <div className="text-center form-action">
-          {submitAction || (
-            <Button htmlType="submit" type="primary" className="btn-form" loading={loading}>
-              {submitText}
-            </Button>
-          )}
-          {cancelAction || (
-            <Button type="primary" ghost onClick={this.handleReset} className="btn-form">
-              RESET
-            </Button>
-          )}
+          {formSubmitAction}
+          {formCancelAction}
         </div>
       </Form>
     );

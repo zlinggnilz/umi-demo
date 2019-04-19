@@ -8,6 +8,7 @@ import styles from './banner.less';
 export default class SwipeCustom extends PureComponent {
   static propTypes = {
     data: PropTypes.array,
+    onChange: PropTypes.func,
     options: PropTypes.object,
     thumbData: PropTypes.array,
     thumbOptions: PropTypes.object,
@@ -40,29 +41,38 @@ export default class SwipeCustom extends PureComponent {
         nextEl: this.swiperEl.querySelector('.swiper-button-next'),
         prevEl: this.swiperEl.querySelector('.swiper-button-prev'),
       },
+      on: {
+        slideChange: this.handleChange,
+      },
       ...options,
       thumbs: {
         swiper: {
           el: this.thumbEl,
           // loop: true,
+          centerInsufficientSlides: true,
           lazy: {
             loadPrevNext: true,
           },
           slidesPerView: 6,
           slidesPerGroup: 1,
-          pagination: {
-            el: this.thumbWrap.querySelector('.swiper-pagination'),
-            clickable: true,
-          },
-          // navigation: {
-          //   nextEl: this.thumbWrap.querySelector('.swiper-button-next'),
-          //   prevEl: this.thumbWrap.querySelector('.swiper-button-prev'),
+          // pagination: {
+          //   el: this.thumbWrap.querySelector('.swiper-pagination'),
+          //   clickable: true,
           // },
+          navigation: {
+            nextEl: this.thumbWrap.querySelector('.swiper-button-next'),
+            prevEl: this.thumbWrap.querySelector('.swiper-button-prev'),
+          },
           ...thumbOptions,
         },
       },
     });
   }
+
+  handleChange = () => {
+    const { onChange } = this.props;
+    onChange && onChange((this.swiper && this.swiper.realIndex) || 0);
+  };
 
   render() {
     const { options, thumbOptions, thumbData, data } = this.props;
@@ -111,9 +121,9 @@ export default class SwipeCustom extends PureComponent {
               ))}
             </div>
           </div>
-          <div className="swiper-pagination" />
-          {/* <div className="swiper-button-next swiper-button-black" />
-          <div className="swiper-button-prev swiper-button-black" /> */}
+          {/* <div className="swiper-pagination" /> */}
+          <div className="swiper-button-next swiper-button-black" />
+          <div className="swiper-button-prev swiper-button-black" />
         </div>
       </Fragment>
     );
