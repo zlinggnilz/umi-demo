@@ -31,23 +31,6 @@ export default [
         ],
       },
       {
-        path: '/form',
-        name: '表单',
-        icon: 'reconciliation',
-        routes: [
-          {
-            path: '/form/simple-form',
-            name: '普通表单',
-            component: './form/simple-form',
-          },
-          {
-            path: '/form/multi-form',
-            name: '多级表单',
-            component: './form/multi-form',
-          },
-        ],
-      },
-      {
         path: '/table',
         name: '翻页表格',
         icon: 'table',
