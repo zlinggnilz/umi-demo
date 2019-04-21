@@ -39,7 +39,7 @@ module.exports = {
     'import/extensions': [0],
     'import/prefer-default-export': [0],
     'arrow-parens': ['error', 'as-needed'],
-    'no-param-reassign': ['error', { props: false }],
+    'no-param-reassign': ['warn', { props: false }],
     'no-plusplus': [0],
     'react/require-default-props': [0],
     'react/destructuring-assignment': [0],

@@ -3,7 +3,7 @@ import Swiper from 'swiper/dist/js/swiper.js';
 import 'swiper/dist/css/swiper.min.css';
 import { map } from 'lodash';
 import PropTypes from 'prop-types';
-import styles from './banner.less';
+import styles from './index.less';
 
 export default class SwipeCustom extends PureComponent {
   static propTypes = {

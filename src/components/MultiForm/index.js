@@ -4,7 +4,7 @@ import { Form, Button, Row, Col, Icon, Modal } from 'antd';
 import CreateForm from '@/components/CreateForm';
 import { get, map, set, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import { formTrim } from '@/utils/form';
+import { formTrim } from '@/components/_utils/form';
 
 const keyObj = {};
 
@@ -12,7 +12,18 @@ const keyObj = {};
 class MultiLevelForm extends PureComponent {
   static propTypes = {
     data: PropTypes.object,
-    formAttr: PropTypes.array,
+    formAttr: PropTypes.arrayOf(
+      PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        label: PropTypes.any,
+        dataSource: PropTypes.oneOfType([PropTypes.func, PropTypes.array]),
+        defaultValue: PropTypes.oneOfType([PropTypes.func, PropTypes.any]),
+        max: PropTypes.number,
+        col: PropTypes.object,
+        style: PropTypes.object,
+        shouldRender: PropTypes.bool,
+      })
+    ),
     loading: PropTypes.bool,
     onSubmit: PropTypes.func,
     cancelAction: PropTypes.element,
@@ -90,12 +101,6 @@ class MultiLevelForm extends PureComponent {
 
           const recordVals = get(data, `${parentkey}[${record.key}]`, []) || [];
           if (recordVals.length > 1) {
-            // const formItemKey = `formKey-${parentkey}-${record.key}-multiFormKey`;
-            // const formKeyArr = this.formKeys[formItemKey];
-            // const newArr = [];
-            // formKeyArr.forEach(i => {
-            //   newArr.push(recordVals[i]);
-            // });
             set(data, `${parentkey}[${record.key}]`, recordVals.filter(item => item));
           }
         }
@@ -162,26 +167,27 @@ class MultiLevelForm extends PureComponent {
     const { getFieldDecorator } = form;
     const recordkey = `${parentkey}[${record.key}]${ark !== null ? `[${ark}]` : ''}`;
     const getItem = item => {
-      const { label, key, valueFunc, keyFunc, defaultValue, col, dataSourceFunc, dataSource, style, ...rest } = item;
-      let newkey;
-      if (keyFunc) {
-        newkey = keyFunc(recordkey);
-      }
-      const itemkey = record.items ? `${recordkey}[${(newkey || key || '').trim()}]` : recordkey;
+      const { label, key = '', defaultValue, col = { xs: 24, sm: 12, md: 8 }, dataSource = [], style, shouldRender, ...rest } = item;
+
+      const getItemKey = typeof key === 'function' ? key(recordkey) : key;
+
+      const itemkey = record.items ? `${recordkey}[${getItemKey.trim()}]` : recordkey;
       const v = get(data, itemkey);
-      let dv = v !== undefined && v !== null ? v : defaultValue;
-      dv = valueFunc ? valueFunc(v, get(data, recordkey), recordkey) : dv;
-      const responsive = col || { xs: 24, sm: 12, md: 8 };
-      let dataSourceArr = dataSource || [];
-      if (dataSourceFunc) {
-        dataSourceArr = dataSourceFunc(itemkey, recordkey);
-      }
+      const dv =
+        typeof defaultValue === 'function' ? defaultValue(v, get(data, recordkey), recordkey) : v !== undefined && v !== null ? v : defaultValue;
+      const dataSourceArr = typeof dataSource === 'function' ? dataSource(itemkey, recordkey) : dataSource;
+
       this.formItemKeys.push(itemkey);
+      if (shouldRender !== undefined) {
+        this.setFormItemShow({
+          [itemkey]: typeof shouldRender === 'function' ? shouldRender(itemkey, recordkey) : shouldRender,
+        });
+      }
       if (!this.getFormItemShow(itemkey)) {
         return null;
       }
       return (
-        <Col {...responsive} key={`col-${itemkey}`} style={style}>
+        <Col {...col} key={`col-${itemkey}`} style={style}>
           {/* item key : {itemkey} */}
           <CreateForm
             getFieldDecorator={getFieldDecorator}
@@ -276,6 +282,9 @@ class MultiLevelForm extends PureComponent {
           </div>
         </Col>
       );
+      if (record.max && !(attrKeyArr.length < record.max)) {
+        return rend;
+      }
       rend.push(add);
       return rend;
     }

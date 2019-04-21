@@ -3,7 +3,7 @@ import { Form, Button, Row, Col } from 'antd';
 import CreateForm from '@/components/CreateForm';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { formTrim } from '@/utils/form';
+import { formTrim } from '@/components/_utils/form';
 import styles from './index.less';
 
 @Form.create()
@@ -18,7 +18,7 @@ class CommonForm extends PureComponent {
     submitText: PropTypes.string,
   };
 
-  static defaultPorps = {
+  static defaultProps = {
     data: {},
     formAttr: [],
     submitText: 'SAVE',
@@ -48,24 +48,22 @@ class CommonForm extends PureComponent {
     return (
       <Row type="flex" gutter={32}>
         {formAttr.map(item => {
-          const { onlyLabel, label, key, valueFunc, defaultValue, col, style, ...rest } = item;
-
-          const responsive = col || { xs: 24, sm: 12, md: 8 };
+          const { onlyLabel, label, key, defaultValue, col = { xs: 24, sm: 12, md: 8 }, style, ...rest } = item;
 
           if (onlyLabel) {
             return (
-              <Col {...responsive} key={`col-label-${item.label}`} style={style}>
+              <Col {...col} key={`col-label-${item.label}`} style={style}>
                 <div className={`${styles.onlyLabel} flex align-middle`}>{label}</div>
               </Col>
             );
           }
 
           const v = get(data, key);
-          let dv = v !== undefined && v !== null ? v : defaultValue;
-          dv = valueFunc ? valueFunc(v, data) : dv;
+
+          const dv = typeof defaultValue === 'function' ? defaultValue(v, data) : v !== undefined && v !== null ? v : defaultValue;
 
           return (
-            <Col {...responsive} key={`col${item.key}`} style={style}>
+            <Col {...col} key={`col${item.key}`} style={style}>
               <CreateForm getFieldDecorator={getFieldDecorator} name={key} label={label} {...rest} defaultValue={dv} />
             </Col>
           );
