@@ -11,7 +11,7 @@ const service = axios.create({
 });
 
 // request interceptor
-axios.interceptors.request.use(
+service.interceptors.request.use(
   config =>
     // console.log(config);
     config,
@@ -24,7 +24,7 @@ axios.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    const { status } = response;
+    const { status, data } = response;
 
     console.log('response', response);
 
@@ -36,7 +36,7 @@ service.interceptors.response.use(
       success: true,
       // code: 200,
       message: '',
-      result: response.data,
+      result: data,
     };
 
     if (!res.success) {
@@ -44,7 +44,7 @@ service.interceptors.response.use(
       message.error(res.message);
       return Promise.reject(res.message);
     }
-    return response.data;
+    return data;
   },
   error => {
     console.log(`error: ${error}`); // for debug
