@@ -1,5 +1,6 @@
-export default {
+module.exports = {
   'primary-color': '#004771',
+  'primary-1': '#d8e2e4',
   'border-radius-base': 0,
   'border-radius-sm': 0,
   'btn-border-radius-base': 0,
@@ -8,6 +9,11 @@ export default {
   'btn-height-lg': '48px',
   'btn-height-sm': '30px',
   'table-border-radius-base': 0,
+  'card-head-padding': '10px',
+  'card-inner-head-padding': '8px',
   'card-radius': 0,
   'avatar-border-radius': 0,
+  'input-height-base': '40px',
+  'input-height-lg': '48px',
+  'input-height-sm': '28px',
 };

@@ -2,33 +2,14 @@
 import os from 'os';
 import slash from 'slash2';
 import pageRoutes from './router.config';
-import webpackPlugin from './plugin.config';
+// import webpackPlugin from './plugin.config';
 import defaultSettings from '../src/defaultSettings';
+import theme from './theme.config';
 
 const cssExtract = require('mini-css-extract-plugin');
 
-const { pwa, primaryColor } = defaultSettings;
+const { pwa } = defaultSettings;
 const { APP_TYPE, TEST } = process.env;
-
-const theme = {
-  'primary-color': '#004771',
-  'primary-1': '#d8e2e4',
-  'border-radius-base': 0,
-  'border-radius-sm': 0,
-  'btn-border-radius-base': 0,
-  'btn-border-radius-sm': 0,
-  'btn-height-base': '40px',
-  'btn-height-lg': '48px',
-  'btn-height-sm': '30px',
-  'table-border-radius-base': 0,
-  'card-head-padding': '10px',
-  'card-inner-head-padding': '8px',
-  'card-radius': 0,
-  'avatar-border-radius': 0,
-  'input-height-base': '40px',
-  'input-height-lg': '48px',
-  'input-height-sm': '28px',
-};
 
 const plugins = [
   [
