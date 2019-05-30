@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Card } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './card.less';
+import './card.less';
 
 export default class CustomCard extends PureComponent {
   static propTypes = {
