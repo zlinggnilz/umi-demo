@@ -32,7 +32,7 @@ export default class RangeTime extends PureComponent {
 
   disabledStartDate = () => {
     const { endValue } = this.state;
-    return endValue ? range(endValue.hour(), 24) : false;
+    return endValue ? range(endValue.hour() + 1, 24) : false;
   };
 
   disabledEndDate = () => {
@@ -43,7 +43,7 @@ export default class RangeTime extends PureComponent {
   disabledStartMinute = seletehour => {
     const { endValue } = this.state;
     if (endValue && seletehour === endValue.hour()) {
-      return range(endValue.minute(), 60);
+      return range(endValue.minute() + 1, 60);
     }
     return false;
   };
@@ -56,22 +56,27 @@ export default class RangeTime extends PureComponent {
     return false;
   };
 
-  onChange = v => {
+  onChange = valObj => {
     const { onChange } = this.props;
     const obj = {
       ...this.state,
-      ...v,
+      ...valObj,
     };
     this.setState(obj);
+    const { startValue, endValue } = obj;
     onChange && onChange([startValue, endValue]);
   };
 
-  onStartChange = v => {
-    this.onChange({ startValue: v });
+  onStartChange = startValue => {
+    const { endValue } = this.state;
+    const obj = startValue && endValue && endValue.isBefore(startValue) ? { startValue: endValue } : { startValue };
+    this.onChange(obj);
   };
 
-  onEndChange = v => {
-    this.onChange({ endValue: v });
+  onEndChange = endValue => {
+    const { startValue } = this.state;
+    const obj = startValue && endValue && endValue.isBefore(startValue) ? { endValue: startValue } : { endValue };
+    this.onChange(obj);
   };
 
   handleStartOpenChange = open => {
