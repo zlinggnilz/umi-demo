@@ -50,7 +50,7 @@ class CustomSelect extends PureComponent {
     const { dataSource = [] } = this.props;
     v = v || '';
     const filterWord = v.trim().toLowerCase();
-    const showArr = dataSource.filter(item => item.label.toLowerCase().includes(filterWord));
+    const showArr = filterWord ? dataSource.filter(item => item.label.toLowerCase().includes(filterWord)) : dataSource;
     this.setState({ page: 1, showArr });
   };
 
