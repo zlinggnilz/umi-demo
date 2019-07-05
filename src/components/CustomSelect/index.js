@@ -16,11 +16,15 @@ class CustomSelect extends PureComponent {
     onChange: PropTypes.func,
   };
 
+  static defaultProps = {
+    dataSource:[]
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       page: 1,
-      showArr: props.dataSource || [],
+      showArr: props.dataSource,
     };
     this.pageSize = 20;
     this.list = [];
@@ -42,12 +46,12 @@ class CustomSelect extends PureComponent {
   };
 
   handleFocus = () => {
-    const { dataSource = [] } = this.props;
+    const { dataSource } = this.props;
     this.setState({ page: 1, showArr: dataSource });
   };
 
   handleSearch = v => {
-    const { dataSource = [] } = this.props;
+    const { dataSource } = this.props;
     v = v || '';
     const filterWord = v.trim().toLowerCase();
     const showArr = filterWord ? dataSource.filter(item => item.label.toLowerCase().includes(filterWord)) : dataSource;
