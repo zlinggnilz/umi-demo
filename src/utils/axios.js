@@ -1,22 +1,33 @@
 import axios from 'axios';
-import { message } from 'antd';
 import { baseurl } from '@/constans';
+import { get } from 'lodash';
+import errorMsg from '@/constans/errorMsg';
+import { Notification } from 'antd';
+// import router from 'umi/router'
 
-// create an axios instance
 const service = axios.create({
   baseURL: baseurl,
-  timeout: 10000, // request timeout
-  withCredentials: true,
+  timeout: 15000, // request timeout
+  // withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
 
 // request interceptor
 service.interceptors.request.use(
-  config =>
-    // console.log(config);
-    config,
+  config => {
+    if (config.method === 'get' && config.data) {
+      config.params = config.data;
+      delete config.data;
+    }
+
+    return config;
+  },
   error => {
-    console.log('request', error);
+    console.log('request error', error.message);
+    Notification.error({
+      ...errorMsg['500'],
+      key: 'networkError',
+    });
     return Promise.reject(error);
   }
 );
@@ -24,32 +35,37 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    const { status, data } = response;
+    const { data } = response;
 
-    console.log('response', response);
+    const { code: resCode, result } = data;
 
-    if (status !== 200) {
-      return Promise.reject(response);
+    if (resCode !== 200) {
+      Notification.error({
+        ...errorMsg[resCode],
+        key: resCode,
+      });
+
+      return Promise.reject({ error: 'error', code: resCode });
     }
 
-    const res = {
-      success: true,
-      // code: 200,
-      message: '',
-      result: data,
-    };
-
-    if (!res.success) {
-      // success 不是true 的情况
-      message.error(res.message);
-      return Promise.reject(res.message);
-    }
-    return data;
+    return { data: result };
   },
   error => {
-    console.log(`error: ${error}`); // for debug
-    // message(error.mesage);
-    return Promise.reject(error);
+    console.log('response error', error);
+
+    const code = get(error.response, 'status');
+    
+    /** 401 跳转登录 */
+    // if(code === 401){
+    //   router.push('/login')
+    // }
+
+    Notification.error({
+      ...errorMsg[code],
+      key: 'networkError',
+    });
+
+    return Promise.reject({ error });
   }
 );
 
