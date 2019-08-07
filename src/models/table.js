@@ -14,7 +14,7 @@ export default {
         payload: [],
       });
 
-      const data = yield call(services.fetchRecords, payload);
+      const { data } = yield call(services.fetchRecords, payload);
       yield put({
         type: 'setRecords',
         payload: data.list,

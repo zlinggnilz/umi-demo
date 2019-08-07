@@ -9,7 +9,7 @@ export default {
 
   effects: {
     *fetchInfo({ payload }, { put, call }) {
-      const data = yield call(services.fetchInfo, payload);
+      const { data } = yield call(services.fetchInfo, payload);
       yield put({
         type: 'setInfo',
         payload: data,
