@@ -13,6 +13,7 @@ module.exports = {
     APP_TYPE: true,
     page: true,
   },
+  plugins: ['react-hooks', 'react'],
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
     'react/jsx-wrap-multilines': 0,
@@ -52,6 +53,8 @@ module.exports = {
     eqeqeq: [1],
     'prefer-destructuring': [1],
     'jsx-a11y/alt-text': [1],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
   },
   settings: {
     polyfills: ['fetch', 'promises', 'url'],

@@ -17,8 +17,8 @@ class CustomSelect extends PureComponent {
   };
 
   static defaultProps = {
-    dataSource:[]
-  }
+    dataSource: [],
+  };
 
   constructor(props) {
     super(props);
@@ -30,6 +30,8 @@ class CustomSelect extends PureComponent {
     this.list = [];
   }
 
+  pageSt = 0;
+
   handleChange = v => {
     const { onChange, dataSource } = this.props;
     onChange && onChange(v);
@@ -40,8 +42,15 @@ class CustomSelect extends PureComponent {
     const { page, showArr } = this.state;
     e.persist();
     const { target } = e;
-    if (target.scrollTop + target.offsetHeight === target.scrollHeight && this.list.length < showArr.length) {
+    const st = target.scrollTop;
+    if (st === 0 && this.pageSt) {
+      target.scrollTop = this.pageSt;
+    }
+    if (st + target.offsetHeight + 2 >= target.scrollHeight && this.list.length < showArr.length) {
       this.setState({ page: page + 1 });
+      this.pageSt = st;
+    } else {
+      this.pageSt = 0;
     }
   };
 
