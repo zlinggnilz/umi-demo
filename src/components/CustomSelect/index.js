@@ -46,7 +46,7 @@ class CustomSelect extends PureComponent {
     if (st === 0 && this.pageSt) {
       target.scrollTop = this.pageSt;
     }
-    if (st + target.offsetHeight + 2 >= target.scrollHeight && this.list.length < showArr.length) {
+    if (st + target.offsetHeight + 1 >= target.scrollHeight && this.list.length < showArr.length) {
       this.setState({ page: page + 1 });
       this.pageSt = st;
     } else {
@@ -70,7 +70,19 @@ class CustomSelect extends PureComponent {
   render() {
     const { dataSource, ...rest } = this.props;
     const { showArr, page } = this.state;
-    this.list = showArr.slice(0, this.pageSize * page);
+    if (showArr.length > this.pageSize) {
+      this.list = showArr.slice(0, this.pageSize * page);
+      // 当value是外部赋值的时候，判断value是否在当前的list中，如果不在，单独加进来
+      if (this.props.value) {
+        let valueObj = this.list.find(item => item.key === this.props.value);
+        if (!valueObj) {
+          valueObj = dataSource.find(item => item.key === this.props.value);
+          valueObj && this.list.unshift(valueObj);
+        }
+      }
+    } else {
+      this.list = showArr;
+    }
     return (
       <Select
         {...rest}
