@@ -1,11 +1,11 @@
 export const formTrim = (initial = {}) => {
-  const judge = data => {
+  const handle = data => {
     if (!data) return data;
     if (typeof data === 'string') {
       data = data.trim();
     } else if (Array.isArray(data)) {
       data.forEach((v, index) => {
-        data[index] = judge(v);
+        data[index] = handle(v);
       });
     } else if (typeof data === 'object') {
       return formTrim(data);
@@ -14,7 +14,7 @@ export const formTrim = (initial = {}) => {
   };
   const itera = obj => {
     Object.keys(obj).forEach(key => {
-      obj[key] = judge(obj[key]);
+      obj[key] = handle(obj[key]);
     });
     return obj;
   };
