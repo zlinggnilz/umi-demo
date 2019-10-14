@@ -25,18 +25,13 @@ class CustomSelect extends PureComponent {
     this.state = {
       page: 1,
       showArr: props.dataSource,
+      open: false,
     };
     this.pageSize = 20;
     this.list = [];
   }
 
   pageSt = 0;
-
-  handleChange = v => {
-    const { onChange, dataSource } = this.props;
-    onChange && onChange(v);
-    this.setState({ page: 1, showArr: dataSource });
-  };
 
   handlePopupScroll = e => {
     const { page, showArr } = this.state;
@@ -54,25 +49,28 @@ class CustomSelect extends PureComponent {
     }
   };
 
-  handleFocus = () => {
-    const { dataSource } = this.props;
-    this.setState({ page: 1, showArr: dataSource });
-  };
-
   handleSearch = v => {
     const { dataSource } = this.props;
-    v = v || '';
-    const filterWord = v.trim().toLowerCase();
+    const filterWord = (v || '').trim().toLowerCase();
     const showArr = filterWord ? dataSource.filter(item => item.label.toLowerCase().includes(filterWord)) : dataSource;
     this.setState({ page: 1, showArr });
   };
 
+  onDropdownVisibleChange = open => {
+    const { dataSource } = this.props;
+
+    this.setState({ open });
+
+    if (open) {
+      this.setState({ page: 1, showArr: dataSource });
+    }
+  };
+
   render() {
-    const { dataSource, ...rest } = this.props;
-    const { showArr, page } = this.state;
+    const { className, style, name, parentkey, dataSource, ...rest } = this.props;
+    const { showArr, page, open } = this.state;
     if (showArr.length > this.pageSize) {
       this.list = showArr.slice(0, this.pageSize * page);
-      // 当value是外部赋值的时候，判断value是否在当前的list中，如果不在，单独加进来
       if (this.props.value) {
         let valueObj = this.list.find(item => item.key === this.props.value);
         if (!valueObj) {
@@ -86,15 +84,15 @@ class CustomSelect extends PureComponent {
     return (
       <Select
         {...rest}
-        onChange={this.handleChange}
         filterOption={false}
         onPopupScroll={this.handlePopupScroll}
-        onFocus={this.handleFocus}
         onSearch={this.handleSearch}
+        onDropdownVisibleChange={this.onDropdownVisibleChange}
+        open={open}
       >
         {map(this.list, opt => (
-          <Option key={opt.key} value={opt.key}>
-            {opt.label || opt.key}
+          <Option key={`${opt.key}-${opt.label}`} value={opt.key} disabled={!!opt.disabled}>
+            {`${opt.label || opt.key}`}
           </Option>
         ))}
       </Select>

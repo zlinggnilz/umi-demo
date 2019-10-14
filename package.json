@@ -64,6 +64,7 @@
     "lint-staged": "^8.1.0",
     "mockjs": "^1.0.1-beta3",
     "prettier": "1.15.2",
+    "pretty-quick": "^2.0.0",
     "roadhog-api-doc": "^1.1.2",
     "slash2": "^2.0.0",
     "stylelint": "^9.8.0",
@@ -86,7 +87,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint-staged"
+      "pre-commit": "pretty-quick --staged"
     }
   }
 }
