@@ -71,7 +71,7 @@ class CustomSelect extends PureComponent {
     const { showArr, page, open } = this.state;
     if (showArr.length > this.pageSize) {
       this.list = showArr.slice(0, this.pageSize * page);
-      if (this.props.value) {
+      if (this.props.value != null) {
         let valueObj = this.list.find(item => item.key === this.props.value);
         if (!valueObj) {
           valueObj = dataSource.find(item => item.key === this.props.value);
